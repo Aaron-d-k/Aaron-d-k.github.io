@@ -1,1 +1,4 @@
 /public/
+/static/generated-content/
+/static/js/lv-plugin.js
+.vscode

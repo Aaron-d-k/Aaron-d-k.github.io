@@ -10,17 +10,21 @@ HUGO_DEV = hugo server -D
 # --- TASKS ---
 
 # Task to build the dependency
-build_deps:
-	@echo "--- Building Dependencies ---"
-	@$(DEPS_BUILD)
+static/js/lv-plugin.js:
+	@echo "--- Building Lifeviewer ---"
+	cd lifeviewer/build && ./compile.sh && cp ./lv-plugin.js ../../static/js/
+
+static/generated-content/ising.gif:
+	@echo "--- Making Ising GIF ---"
+	cd ../../assets && bash makegif.sh
 
 # Task to build the final site for production
-build: build_deps
+build: static/js/lv-plugin.js static/generated-content/ising.gif
 	@echo "--- Building Hugo Site ---"
 	@$(HUGO_BUILD)
 
 # Task to run the dev server
-dev: build_deps
+dev: static/js/lv-plugin.js static/generated-content/ising.gif
 	@echo "--- Starting Hugo Server ---"
 	@$(HUGO_DEV)
 
@@ -28,6 +32,7 @@ dev: build_deps
 clean:
 	@echo "--- Cleaning up ---"
 	@rm -rf public resources
-	@rm -f static/js/output.js
+	@rm -f static/js/lv-plugin.js
+	@rm -f static/generated-content/*
 
-.PHONY: build_deps build dev clean
+.PHONY: build dev clean

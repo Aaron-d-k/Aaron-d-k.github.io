@@ -1,5 +1,5 @@
 ---
-title: 'The Ising model and CA, part I: Thermodynamics in CA'
+title: 'The Ising Model and CA, Part I: Thermodynamics in CA'
 date: 2025-09-23T00:07:56+05:30
 draft: false
 ---
@@ -59,7 +59,7 @@ where \(p_i\) represents the probability of a certain state \(i\).
 Now, I will be taking a huge leap of faith and assuming the following: HPP behaves completely randomly after a small amount of time, i.e. every possible state with the same energy is equally probable.
 There are a few reasons why this isn’t completely unjustified (like reversibility) but as of now, I have no idea how to prove it in a fully satisfactory way and I am not sure if it is even true. But making this assumption will help us simplify our calculations.
 
-Taking the above statement as a postulate, we get the following expression for entropy of a  \(V=NM\) board with \(\rho V\) particles (I will be ignoring edge effects and assuming \(V\gg1\))
+Taking the above statement as a postulate, we get the following expression for entropy of a  \(V=4NM\) (as each square holds at most 4 particles) board with \(\rho V\) particles (I will be ignoring edge effects and assuming \(V\gg1\))
 
 $$ N_{possible states}={V\choose{\rho V}}=\frac{V!}{(\rho V)!(V-\rho V)!} $$
 $$ p_i=\frac{1}{N_{possible states}}=\frac{(\rho V)!(V-\rho V)!}{V!} $$
@@ -91,7 +91,7 @@ Consider there are \(k\) boxes, each with entropy  \(S_i\). Assume that we do no
 $$ n(X)=e^{S_{X}}=e^{\sum{S_i}} $$
 
 Imagine that after some fixed, but large number of steps, it almost surely results in some state \(Y \) with some entropy \(S_Y \). Since we assumed that all that the elements of \(X \) result in some element of \(Y \), hence the evolution of \(X \) for \(T \) steps is a subset of \(Y \). Because the dynamics of HPP are bijective, this means that
-$$ evolve^n(X) \subseteq Y \implies n(evolve^n(X))\leq n(Y) \implies n(X) \leq n(Y) \implies \sum {S_i}=S_X \leq S_Y $$
+$$ evolve^T(X) \subseteq Y \implies n(evolve^T(X))\leq n(Y) \implies n(X) \leq n(Y) \implies \sum {S_i}=S_X \leq S_Y $$
 
 Hence, we have shown that entropy cannot decrease in all the cases. This derivation can be adapted to bound the exact maximum probability of a certain entropy decreasing transition.
 

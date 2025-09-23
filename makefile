@@ -1,11 +1,7 @@
 # Makefile
 
-# Define the build command for the dependency.
-DEPS_BUILD = cd lifeviewer/build && ./compile.sh && cp ./lv-plugin.js ../../static/js/ && cd ../../assets && bash makegif.sh
-
-# Define the Hugo commands
 HUGO_BUILD = hugo --minify
-HUGO_DEV = hugo server -D
+HUGO_DEV = hugo server -D 
 
 # --- TASKS ---
 

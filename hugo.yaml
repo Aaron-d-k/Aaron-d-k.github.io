@@ -29,8 +29,8 @@ params:
   netlify:
     honeypot: false     # Set to true to add honeypot field in contact form
     recaptcha: false    # Set to true to add recaptcha challenge in contact form
-  # css:                # Uncomment to add custom CSS from the assets directory
-  #   - css/foo.css
+  css:                # Uncomment to add custom CSS from the assets directory
+    - css/custom.css
   #   - bar.css
   # js:                 # Uncomment to add custom JS from the assets directory
   #   - js/lv-plugin.js

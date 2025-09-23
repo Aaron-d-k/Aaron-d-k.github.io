@@ -9,7 +9,7 @@ draft: false
 ### Introduction
 The [Ising model](https://en.wikipedia.org/wiki/Square_lattice_Ising_model) is a famous model of phase transition in a ferromagnetic material. It can be simulated using many methods, famously MCMC methods, leading to pretty looking simulations like this one:
 
-![A simulation of the Ising model using the Metropolis Algorithm, Starting below T_c and finishing above it](/out.gif)
+![A simulation of the Ising model using the Metropolis Algorithm, Starting below T_c and finishing above it](/generated-content/ising.gif)
 
 This basically uses a randomized method that ensures that the generated grid is sampled from the probability distribution we would get if we coupled such a system to a heat bath. The Ising model doesn’t really have any inherent dynamics. The only fixed thing is the energy of each state and the Boltzmann distribution. The main problem with directly trying to port such a simulation to a cellular automaton is that we do not have any way to do a probabilistic action as CA's are completely deterministic. Also, this system does not really conserve energy, and if I really wanted to do physics using CA, I want it to at least try and imitate real life physics.
 

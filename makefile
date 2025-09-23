@@ -8,7 +8,7 @@ HUGO_DEV = hugo server -D
 # Task to build the dependency
 static/js/lv-plugin.js:
 	@echo "--- Building Lifeviewer ---"
-	cd lifeviewer/build && ./compile.sh && cp ./lv-plugin.js ../../static/js/
+	cd lifeviewer/build && ./compile.sh && mkdir -p ../../static/js && cp ./lv-plugin.js ../../static/js/
 
 static/generated-content/ising.gif:
 	@echo "--- Making Ising GIF ---"

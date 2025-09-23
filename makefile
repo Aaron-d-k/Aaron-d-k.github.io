@@ -16,7 +16,7 @@ static/js/lv-plugin.js:
 
 static/generated-content/ising.gif:
 	@echo "--- Making Ising GIF ---"
-	cd ../../assets && bash makegif.sh
+	cd content-generators && yes | bash makegif.sh
 
 # Task to build the final site for production
 build: static/js/lv-plugin.js static/generated-content/ising.gif

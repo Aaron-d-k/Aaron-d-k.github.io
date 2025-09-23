@@ -10,7 +10,7 @@ This is my first time setting up a blog post. Hopefully it goes well!
 
 Testing life viewer:
 <meta name="LifeViewer" content="viewer textarea 30 hide limit /rules/ .rule">
-<script src="js/lv-plugin.js"></script>
+<script src="/js/lv-plugin.js"></script>
 
 <div class="viewer">
     <textarea style="width: 100%; max-width: 100%; height: auto" rows="5">

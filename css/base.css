@@ -191,3 +191,7 @@ kbd:has(kbd) {
 .u-noboosting {
   max-height: 1000000px;
 }
+.u-background {
+    background-size: cover;
+    background-image: url("/output-gy.png");
+}

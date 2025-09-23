@@ -1,10 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="https://Aaron-d-k.github.io/xml/base.min.xml"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Chaotic Emergence</title><link>https://Aaron-d-k.github.io/posts/</link><description>Recent content in Posts on Chaotic Emergence</description><generator>Hugo</generator><language>en-IN</language><lastBuildDate>Tue, 23 Sep 2025 00:07:56 +0530</lastBuildDate><atom:link href="https://Aaron-d-k.github.io/posts/feed.xml" rel="self" type="application/rss+xml"/><item><title>The Ising model and CA, part I: Thermodynamics in CA</title><link>https://Aaron-d-k.github.io/posts/ising-ca-part-1/</link><pubDate>Tue, 23 Sep 2025 00:07:56 +0530</pubDate><guid>https://Aaron-d-k.github.io/posts/ising-ca-part-1/</guid><description>
-
-
-
-&lt;h2 id="the-ising-model-and-ca-part-i-thermodynamics-in-ca"&gt;
- &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/ising-ca-part-1/#the-ising-model-and-ca-part-i-thermodynamics-in-ca"&gt;The Ising model and CA, part I: Thermodynamics in CA&lt;/a&gt;
-&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="https://Aaron-d-k.github.io/xml/base.min.xml"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Chaotic Emergence</title><link>https://Aaron-d-k.github.io/posts/</link><description>Recent content in Posts on Chaotic Emergence</description><generator>Hugo</generator><language>en-IN</language><lastBuildDate>Tue, 23 Sep 2025 00:07:56 +0530</lastBuildDate><atom:link href="https://Aaron-d-k.github.io/posts/feed.xml" rel="self" type="application/rss+xml"/><item><title>The Ising Model and CA, Part I: Thermodynamics in CA</title><link>https://Aaron-d-k.github.io/posts/ising-ca-part-1/</link><pubDate>Tue, 23 Sep 2025 00:07:56 +0530</pubDate><guid>https://Aaron-d-k.github.io/posts/ising-ca-part-1/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;&lt;span style="color: gray;"&gt;Can thermodynamics be applied to a cellular automaton? Can we use it to create a cellular automaton that reproduces the Ising model phase transition?&lt;/span&gt;&lt;/p&gt;&lt;/blockquote&gt;
 
 
 
@@ -13,7 +8,7 @@
  &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/ising-ca-part-1/#introduction"&gt;Introduction&lt;/a&gt;
 &lt;/h3&gt;
 &lt;p&gt;The &lt;a href="https://en.wikipedia.org/wiki/Square_lattice_Ising_model"&gt;Ising model&lt;/a&gt; is a famous model of phase transition in a ferromagnetic material. It can be simulated using many methods, famously MCMC methods, leading to pretty looking simulations like this one:&lt;/p&gt;
-&lt;p&gt;&lt;img src="out.gif" alt="A simulation of the Ising model using the Metropolis Algorithm, Starting below T_c and finishing above it"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://Aaron-d-k.github.io/generated-content/ising.gif" alt="A simulation of the Ising model using the Metropolis Algorithm, Starting below T_c and finishing above it"&gt;&lt;/p&gt;
 &lt;p&gt;This basically uses a randomized method that ensures that the generated grid is sampled from the probability distribution we would get if we coupled such a system to a heat bath. The Ising model doesn’t really have any inherent dynamics. The only fixed thing is the energy of each state and the Boltzmann distribution. The main problem with directly trying to port such a simulation to a cellular automaton is that we do not have any way to do a probabilistic action as CA&amp;rsquo;s are completely deterministic. Also, this system does not really conserve energy, and if I really wanted to do physics using CA, I want it to at least try and imitate real life physics.&lt;/p&gt;
 
 
@@ -31,7 +26,7 @@
 &lt;/ul&gt;
 &lt;p&gt;Lucky for us there already exists a CA with these properties… behold! the &lt;a href="https://en.wikipedia.org/wiki/HPP_model"&gt;HPP lattice gas&lt;/a&gt;!&lt;/p&gt;
 &lt;meta name="LifeViewer" content="viewer textarea 30 hide limit /rules/ .rule"&gt;
-&lt;script src="js/lv-plugin.js"&gt;&lt;/script&gt;
+&lt;script src="https://Aaron-d-k.github.io/js/lv-plugin.js"&gt;&lt;/script&gt;
 &lt;div class="viewer"&gt;
  &lt;textarea style="width: 100%; max-width: 100%;" rows="5"&gt;
 #C [[ ZOOM 30 THEME 19 ICONS GPS 5 ]]
@@ -72,8 +67,8 @@ x = 14, y = 10, rule = HPP
 &lt;p&gt;Now, I will be taking a huge leap of faith and assuming the following: HPP behaves completely randomly after a small amount of time, i.e. every possible state with the same energy is equally probable.
 There are a few reasons why this isn’t completely unjustified (like reversibility) but as of now, I have no idea how to prove it in a fully satisfactory way and I am not sure if it is even true. But making this assumption will help us simplify our calculations.&lt;/p&gt;
 &lt;p&gt;Taking the above statement as a postulate, we get the following expression for entropy of a 
-&lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;V&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mi&gt;N&lt;/mi&gt;&lt;mi&gt;M&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;V=NM&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
- board with 
+&lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;V&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;4&lt;/mn&gt;&lt;mi&gt;N&lt;/mi&gt;&lt;mi&gt;M&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;V=4NM&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
+ (as each square holds at most 4 particles) board with 
 &lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;ρ&lt;/mi&gt;&lt;mi&gt;V&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;\rho V&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
  particles (I will be ignoring edge effects and assuming 
 &lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;V&lt;/mi&gt;&lt;mo&gt;≫&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;V\gg1&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
@@ -137,7 +132,7 @@ BHEMOAF2AFP$14P3.PR2P3RP5RP!
 . Because the dynamics of HPP are bijective, this means that
 &lt;/p&gt;
 
-&lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML" display="block"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;v&lt;/mi&gt;&lt;mi&gt;o&lt;/mi&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;v&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;/msup&gt;&lt;mo stretchy="false"&gt;(&lt;/mo&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;mo stretchy="false"&gt;)&lt;/mo&gt;&lt;mo&gt;⊆&lt;/mo&gt;&lt;mi&gt;Y&lt;/mi&gt;&lt;mtext&gt;  &lt;/mtext&gt;&lt;mo&gt;⟹&lt;/mo&gt;&lt;mtext&gt;  &lt;/mtext&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mo stretchy="false"&gt;(&lt;/mo&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;v&lt;/mi&gt;&lt;mi&gt;o&lt;/mi&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;v&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;/msup&gt;&lt;mo stretchy="false"&gt;(&lt;/mo&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;mo stretchy="false"&gt;)&lt;/mo&gt;&lt;mo stretchy="false"&gt;)&lt;/mo&gt;&lt;mo&gt;≤&lt;/mo&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mo stretchy="false"&gt;(&lt;/mo&gt;&lt;mi&gt;Y&lt;/mi&gt;&lt;mo stretchy="false"&gt;)&lt;/mo&gt;&lt;mtext&gt;  &lt;/mtext&gt;&lt;mo&gt;⟹&lt;/mo&gt;&lt;mtext&gt;  &lt;/mtext&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mo stretchy="false"&gt;(&lt;/mo&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;mo stretchy="false"&gt;)&lt;/mo&gt;&lt;mo&gt;≤&lt;/mo&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mo stretchy="false"&gt;(&lt;/mo&gt;&lt;mi&gt;Y&lt;/mi&gt;&lt;mo stretchy="false"&gt;)&lt;/mo&gt;&lt;mtext&gt;  &lt;/mtext&gt;&lt;mo&gt;⟹&lt;/mo&gt;&lt;mtext&gt;  &lt;/mtext&gt;&lt;mo&gt;∑&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;S&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;S&lt;/mi&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;≤&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;S&lt;/mi&gt;&lt;mi&gt;Y&lt;/mi&gt;&lt;/msub&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt; evolve^n(X) \subseteq Y \implies n(evolve^n(X))\leq n(Y) \implies n(X) \leq n(Y) \implies \sum {S_i}=S_X \leq S_Y &lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
+&lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML" display="block"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;v&lt;/mi&gt;&lt;mi&gt;o&lt;/mi&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;v&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;T&lt;/mi&gt;&lt;/msup&gt;&lt;mo stretchy="false"&gt;(&lt;/mo&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;mo stretchy="false"&gt;)&lt;/mo&gt;&lt;mo&gt;⊆&lt;/mo&gt;&lt;mi&gt;Y&lt;/mi&gt;&lt;mtext&gt;  &lt;/mtext&gt;&lt;mo&gt;⟹&lt;/mo&gt;&lt;mtext&gt;  &lt;/mtext&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mo stretchy="false"&gt;(&lt;/mo&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;v&lt;/mi&gt;&lt;mi&gt;o&lt;/mi&gt;&lt;mi&gt;l&lt;/mi&gt;&lt;mi&gt;v&lt;/mi&gt;&lt;msup&gt;&lt;mi&gt;e&lt;/mi&gt;&lt;mi&gt;T&lt;/mi&gt;&lt;/msup&gt;&lt;mo stretchy="false"&gt;(&lt;/mo&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;mo stretchy="false"&gt;)&lt;/mo&gt;&lt;mo stretchy="false"&gt;)&lt;/mo&gt;&lt;mo&gt;≤&lt;/mo&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mo stretchy="false"&gt;(&lt;/mo&gt;&lt;mi&gt;Y&lt;/mi&gt;&lt;mo stretchy="false"&gt;)&lt;/mo&gt;&lt;mtext&gt;  &lt;/mtext&gt;&lt;mo&gt;⟹&lt;/mo&gt;&lt;mtext&gt;  &lt;/mtext&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mo stretchy="false"&gt;(&lt;/mo&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;mo stretchy="false"&gt;)&lt;/mo&gt;&lt;mo&gt;≤&lt;/mo&gt;&lt;mi&gt;n&lt;/mi&gt;&lt;mo stretchy="false"&gt;(&lt;/mo&gt;&lt;mi&gt;Y&lt;/mi&gt;&lt;mo stretchy="false"&gt;)&lt;/mo&gt;&lt;mtext&gt;  &lt;/mtext&gt;&lt;mo&gt;⟹&lt;/mo&gt;&lt;mtext&gt;  &lt;/mtext&gt;&lt;mo&gt;∑&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;S&lt;/mi&gt;&lt;mi&gt;i&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;S&lt;/mi&gt;&lt;mi&gt;X&lt;/mi&gt;&lt;/msub&gt;&lt;mo&gt;≤&lt;/mo&gt;&lt;msub&gt;&lt;mi&gt;S&lt;/mi&gt;&lt;mi&gt;Y&lt;/mi&gt;&lt;/msub&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt; evolve^T(X) \subseteq Y \implies n(evolve^T(X))\leq n(Y) \implies n(X) \leq n(Y) \implies \sum {S_i}=S_X \leq S_Y &lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
 &lt;p&gt;Hence, we have shown that entropy cannot decrease in all the cases. This derivation can be adapted to bound the exact maximum probability of a certain entropy decreasing transition.&lt;/p&gt;
 &lt;p&gt;Interestingly, due to the reversibility of HPP, it is actually very easy to construct specific magic states that actually violate the second law, for example (The magic happens around 
 &lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;180&lt;/mn&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;t=180&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
@@ -371,7 +366,7 @@ P.P$105.PJP4.PGP$105.PGP4.THQ$105.P.P4.PB3P2X$105.P.P4.PDKJEAE6.pI$
 &lt;p&gt;This is my first time setting up a blog post. Hopefully it goes well!&lt;/p&gt;
 &lt;p&gt;Testing life viewer:&lt;/p&gt;
 &lt;meta name="LifeViewer" content="viewer textarea 30 hide limit /rules/ .rule"&gt;
-&lt;script src="js/lv-plugin.js"&gt;&lt;/script&gt;
+&lt;script src="https://Aaron-d-k.github.io/js/lv-plugin.js"&gt;&lt;/script&gt;
 &lt;div class="viewer"&gt;
  &lt;textarea style="width: 100%; max-width: 100%; height: auto" rows="5"&gt;
 #C [[ ZOOM 8 THEME 19 ]]

@@ -8,6 +8,7 @@ HUGO_DEV = hugo server -D
 # Task to build the dependency
 static/js/lv-plugin.js:
 	@echo "--- Building Lifeviewer ---"
+	git submodule update --init --recursive
 	cd lifeviewer/build && ./compile.sh && mkdir -p ../../static/js && cp ./lv-plugin.js ../../static/js/
 
 static/generated-content/ising.gif:

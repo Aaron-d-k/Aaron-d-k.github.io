@@ -1,4 +1,106 @@
-<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="https://Aaron-d-k.github.io/xml/base.min.xml"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Chaotic Emergence</title><link>https://Aaron-d-k.github.io/posts/</link><description>Recent content in Posts on Chaotic Emergence</description><generator>Hugo</generator><language>en-IN</language><lastBuildDate>Thu, 09 Oct 2025 01:15:16 +0530</lastBuildDate><atom:link href="https://Aaron-d-k.github.io/posts/feed.xml" rel="self" type="application/rss+xml"/><item><title>Quadratic Fractals</title><link>https://Aaron-d-k.github.io/posts/quadratic-fractals/</link><pubDate>Thu, 09 Oct 2025 01:15:16 +0530</pubDate><guid>https://Aaron-d-k.github.io/posts/quadratic-fractals/</guid><description>&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="https://Aaron-d-k.github.io/xml/base.min.xml"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on Chaotic Emergence</title><link>https://Aaron-d-k.github.io/posts/</link><description>Recent content in Posts on Chaotic Emergence</description><generator>Hugo</generator><language>en-IN</language><lastBuildDate>Tue, 21 Oct 2025 15:56:05 +0530</lastBuildDate><atom:link href="https://Aaron-d-k.github.io/posts/feed.xml" rel="self" type="application/rss+xml"/><item><title>The Ising Model and CA, Part II: The Ising CA</title><link>https://Aaron-d-k.github.io/posts/ising-ca-part-2/</link><pubDate>Tue, 21 Oct 2025 15:56:05 +0530</pubDate><guid>https://Aaron-d-k.github.io/posts/ising-ca-part-2/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;&lt;span style="color: gray;"&gt;What is the Ising model CA? How would you attach it to a heat bath?&lt;/span&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;This is a multipart series. Read the others here:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href="../ising-ca-part-1/"&gt;Part I: Thermodynamics in CA&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href="../ising-ca-part-2/"&gt;Part II: The Ising CA&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style="color: gray; font-size: 2px"&gt;Aside: I just re-read my older posts and realized how bad I am at writing for an audience made of people other than myself&amp;hellip; I am actively going to try and use less jargon from now on&amp;hellip;. But unfortunately this series of posts would become wayyy too long if I try writing it for a general audience, so some jargon is inevitable.&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Note: while doing the research for writing this post, I stumbled upon this paper: &lt;a href="http://web.archive.org/web/20070824042140/http://thy.phy.bnl.gov/~creutz/mypubs/pub088.pdf"&gt;Michael Creutz , &amp;ldquo;Deterministic Ising Dynamics,&amp;rdquo; Annals of Physics, 167
+(1986) 62-76&lt;/a&gt;. What the author tries to do there is actually very similar to what I am doing! They also design a purely deterministic CA to simulate the Ising model. But they seem to have taken a different approach where instead of having a single giant heat bath seperated from the main Ising sim, they couple a tiny heat bath of capacity 3 to each cell. This is actually&amp;hellip; a really elegant idea. It requires only 16 states, and there is no need for a seperate heat bath. I still feel my method is much more fun, as it seems much more like a physical material, and this allows you to measure a lot of interesting quantities like thermal conductivity, by sandwitching it between two baths, similar to how you would measure it for a real material.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;In the last post, we saw how thermodynamics in general works in CA. Now, we will specifically look at the Ising model.&lt;/p&gt;
+
+
+
+
+&lt;h2 id="the-ising-ca"&gt;
+ &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/ising-ca-part-2/#the-ising-ca"&gt;The Ising CA&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;This one is not actually my invention, it has been explored by some famous names in cellular automata, e.g. see page 4 &lt;a href="https://people.csail.mit.edu/nhm/cc.pdf"&gt;here&lt;/a&gt;. It has two states, &amp;lsquo;up&amp;rsquo; and &amp;lsquo;down&amp;rsquo;. The rules are pretty simple:&lt;/p&gt;
+&lt;p&gt;We will only update a cell if the follwing two conditions are met:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;x+y+t&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
+ is even (i.e. the updates follow an alternating chessboard pattern)&lt;/li&gt;
+&lt;li&gt;The state flips if there are exactly two adjacent up and two adjacent down cells&lt;/li&gt;
+&lt;/ul&gt;
+&lt;meta name="LifeViewer" content="viewer textarea 30 hide limit /rules/ .rule"&gt;
+&lt;script src="https://Aaron-d-k.github.io/js/lv-plugin.js"&gt;&lt;/script&gt;
+&lt;div class="viewer"&gt;
+ &lt;textarea style="width: 100%; max-width: 100%;" rows="5"&gt;
+#C [[ ZOOM 30 THEME 19 ICONS GPS 1 ]]
+x = 5, y = 4, rule = ising_temp
+pHpIpHpIpH$pIpHpIpHpI$pHpIpHpIpH$pIpHpIpHpI!
+&lt;/textarea&gt;
+ &lt;br&gt;
+ &lt;canvas width="560" height="400"&gt;&lt;canvas&gt;
+&lt;/div&gt;
+&lt;p&gt;This conserves energy according to the definition of energy in the Ising model, as the number of adjacent up-down pairs is always constant.&lt;/p&gt;
+&lt;p&gt;It also happens to be reversible. Thw reverse rule happens to be itself, with the checkerboard flipped. To see this, what we do is that we apply the rule without flipping the chessboard pattern. Because of the chessboard pattern, the number of neighbours of a particular color for each changed cell remains the same, and so the exact same states gets flipped again. Hence the step gets reversed.&lt;/p&gt;
+&lt;p&gt;As we know that this rule is both reversible and energy-conserving, we can apply thermodynamics here.&lt;/p&gt;
+&lt;p&gt;But, here a problem is that unlike the previous case, we cannot assume all the energy locations are independent, so there is no obvious way to determine temperature. But the same definition still works: The energy needed to increase entropy by one unit.&lt;/p&gt;
+&lt;p&gt;To actually measure the entropy, there is a known formula, but it is very complicated. And the formula can be found only after you find the exact solution to the model, so I think it&amp;rsquo;s cheating to use that. That is why to actually work with temperature, we couple it with a system whose temperature can be easily calculated.&lt;/p&gt;
+&lt;p&gt;Now, you can use this even without a heat bath to calculate the graph between energy density and magnetisation. Here is approximately how they would look (I got lazy, these are the graphs when it is coupled to the heat bath with slow energy loss, but they should look the same)&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://Aaron-d-k.github.io/images/Evm.png" alt="E vs m"&gt;&lt;/p&gt;
+&lt;p&gt;Some observations:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;I cut off the graph at low energies. This is because the system starts to get &amp;lsquo;frozen&amp;rsquo; and hence energy transfer becomes too slow. So you would have to wait for an impractically long time in order to reach equilibrium.&lt;/li&gt;
+&lt;li&gt;You see that 
+&lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi mathvariant="normal"&gt;∣&lt;/mi&gt;&lt;mi&gt;m&lt;/mi&gt;&lt;mi mathvariant="normal"&gt;∣&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;|m|&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
+ drops drastically between 
+&lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;0.15&lt;/mn&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;E=0.15&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
+and 
+&lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;0.2&lt;/mn&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;E=0.2&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
+. This is where the phase transition happens!&lt;/li&gt;
+&lt;li&gt;It is extremely noisy and not smooth. To get a proper smoothed graph we will have to take multiple samples at each energy level and do some averaging. This is STATISTICAL mechanics, so nothing is absolute, everything is always fluctuating.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It gives the expected results, but the phase transition is not very satisfying to watch. To see proper one, we will need to move on to designing and interface between our heat bath and our Ising CA.&lt;/p&gt;
+
+
+
+
+&lt;h2 id="the-interface"&gt;
+ &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/ising-ca-part-2/#the-interface"&gt;The Interface&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;The interface basically consists of a row of cells that can carry energy both in the form of HPP energy packets and Ising bond energy.
+The big picture idea behind its evolution is very simple: In every step where it is active, it interconverts energy between its Ising form and its gas form. I&amp;rsquo;ve tried to make this visible through the icons given to each state.
+The only problem is that we must respect the chessboard update pattern and reversibilty and all the conservation laws. To do this more easily, I imagined every step of the CA as consisting of two substeps:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Energy movement&lt;/li&gt;
+&lt;li&gt;State permutation&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The movement of the HPP gas and the Ising spin flip both happen under step 1. The HPP reflection rule, interface energy tranfer and the chessboard alternation all happen under step 2.&lt;/p&gt;
+&lt;p&gt;By ensuring that both steps satisfy energy conservation and reversibility, we can prove the final rule does so too, which makes enforcing these much simpler.&lt;/p&gt;
+&lt;p&gt;The proof of reversiblity and energy conservation of the first part can be directly copied from the same proofs for HPP and the Ising CA.&lt;/p&gt;
+&lt;p&gt;For the second step, note that all possible energy transfers are compulsory, so on doing it again the energy just gets transferred back.&lt;/p&gt;
+&lt;div class="viewer"&gt;
+ &lt;textarea style="width: 100%; max-width: 100%;" rows="5"&gt;
+#C [[ ZOOM 50 THEME 19 ICONS ]]
+x = 8, y = 6, rule = ising_temp
+.pI$2.pIpH2.pI$.pOpPpKpLpOpP$PDNB.ELP$PHCANALP$.R5P!
+ &lt;/textarea&gt;
+ &lt;br&gt;
+ &lt;canvas width="560" height="400"&gt;&lt;canvas&gt;
+&lt;/div&gt;
+&lt;p&gt;So that is it! The interface has been successfully designed and now we can move on to analyzing the behaviour of the final system, in the next post.&lt;/p&gt;
+
+
+
+
+&lt;h2 id="the-gory-details-the-golly-rule-format-and-nutshell"&gt;
+ &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/ising-ca-part-2/#the-gory-details-the-golly-rule-format-and-nutshell"&gt;The gory details: The Golly Rule format and Nutshell&lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;In order to actually run the CA, we have to specify them in some format. The standard format accepted by most widely used CA software is the &lt;a href="https://golly.sourceforge.io/Help/formats.html#rule"&gt;rule table&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In this format, rules are specified as transitions. For example the line&lt;/p&gt;
+
+ 
+
+&lt;pre tabindex="0"&gt;&lt;code&gt;0, 0,0,0,0,0,1,1,1, 1&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;signifies that a 0 cell with exactly three 1 neighbours turns into a 1.
+It also supports variables, which allow you to compact multiple transitions into one line.&lt;/p&gt;
+&lt;p&gt;Unfortunately, it is a pain to write manually and hence &lt;a href="https://github.com/supposedly/nutshell"&gt;Nutshell&lt;/a&gt; was created. Nutshell adds several helpful features like independent variables and temporary symmetry switching.&lt;/p&gt;
+&lt;p&gt;While designing the rule, the number of nutshell transitions also turned out to be pretty large (54) so I decided to write a python script to generate the transitions for me. It also allowed me to properly incorporate the 2 step way of thinking about the rule that I had described. It also makes debugging and iterating much simpler.&lt;/p&gt;
+&lt;p&gt;So in the end, to generate the rule file you have to run my code and then copy-paste the output into a template. This template would contain the rule name and the icons for every state. Then we have to compile that using Nutshell. And then paste the output rule file into Golly. Which turns out to be an extremely convoluted workflow&amp;hellip;.&lt;/p&gt;
+&lt;p&gt;Lot of the complexity arises due to the fact that energy conservation and reversability are both not natural concepts in the rule table format. Another complication is that the symmetry obeyed by the HPP gas involves a rotation and a state permutation, so it is not natively supported anywhere. So you have to manually specify all 4 directions seperately.&lt;/p&gt;
+&lt;hr /&gt;</description></item><item><title>Quadratic Fractals</title><link>https://Aaron-d-k.github.io/posts/quadratic-fractals/</link><pubDate>Thu, 09 Oct 2025 01:15:16 +0530</pubDate><guid>https://Aaron-d-k.github.io/posts/quadratic-fractals/</guid><description>&lt;blockquote&gt;
 &lt;p&gt;&lt;span style="color: gray;"&gt;How to make pretty pictures?&lt;/span&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;I love fractals! Mostly because I think they look really pretty, but also because they show us how much detail and complexity is hidden even in the simplest math.&lt;/p&gt;
 &lt;p&gt;Recently, I was trying to learn about heuristic algorithms. These are algorithms that don&amp;rsquo;t always give the best answer, but they are usually much faster and easier to run. I thought that trying to find fractals that are as intricate as possible sounds like a nice problem to try, as it is very hard to go through all possibilities. Here are some samples of the results I managed to get: (Hopefully my color palette isn&amp;rsquo;t too painful to look at)&lt;/p&gt;
@@ -54,6 +156,9 @@ We can find out if points close to 0 always tend to get closer by calculating so
 &lt;hr /&gt;
 &lt;p&gt;&lt;em&gt;Edited (Oct 14): Improved wording&lt;/em&gt;&lt;/p&gt;</description></item><item><title>The Ising Model and CA, Part I: Thermodynamics in CA</title><link>https://Aaron-d-k.github.io/posts/ising-ca-part-1/</link><pubDate>Tue, 23 Sep 2025 00:07:56 +0530</pubDate><guid>https://Aaron-d-k.github.io/posts/ising-ca-part-1/</guid><description>&lt;blockquote&gt;
 &lt;p&gt;&lt;span style="color: gray;"&gt;Can thermodynamics be applied to a cellular automaton? Can we use it to create a cellular automaton that reproduces the Ising model phase transition?&lt;/span&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;&lt;strong&gt;This is a multipart series. Read the others here:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href="../ising-ca-part-1/"&gt;Part I: Thermodynamics in CA&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href="../ising-ca-part-2/"&gt;Part II: The Ising CA&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
 
 

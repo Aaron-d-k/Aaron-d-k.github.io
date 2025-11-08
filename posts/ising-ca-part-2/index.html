@@ -1,179 +1,25 @@
-<!DOCTYPE html>
-<html lang="en-IN">
-
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
-  
-  <meta charset="utf-8">
-
-
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
-  
-    <meta name="description" content="
-
-I just re-read my older posts and realized how bad I am at writing for an audience made of people other than myself&hellip; I am actively going to try and use less jargon from now on&hellip;.
-In the last post, we saw how thermodynamics in general works in CA. Now, we will specifically look at the Ising model.
-
-
-
-
-
-  The Ising CA
-
-This one is not actually my invention, it has been explored by some of the earliest explorers of cellular automata. It has two states, &lsquo;up&rsquo; and &lsquo;down&rsquo;. The rules are pretty simple:">
-  
-
-
-<meta name="color-scheme" content="light dark">
-
-
-
-
-
-
-
-<meta name="generator" content="Hugo 0.150.0">
-  <title>The Ising Model and CA, Part II: Thermodynamics in CA | Chaotic Emergence</title>
-  <link href="http://localhost:1313/posts/ising-ca-part-2/" rel="canonical">
-
-
-
-
-  
-
-
-
-
-  
-  
-    
-    
-  
-  
-
-
-
-
-
-  
-    
-  
-  
-    <link href="/css/base.css" rel="stylesheet">
-
-
-
-</head>
-
-<body>
-  <nav class="u-background">
-  <div class="u-wrapper">
-    <ul class="Banner">
-      <li class="Banner-item Banner-item--title">
-        
-          <a class="Banner-link u-clickable" href="/">Chaotic Emergence</a>
-        
-      </li>
-      
-        
-        
-        <li class="Banner-item">
-          <a class="Banner-link u-clickable" href="/about/">About</a>
-        </li>
-      
-        
-        
-        <li class="Banner-item">
-          <a class="Banner-link u-clickable" href="/">Posts</a>
-        </li>
-      
-        
-        
-        <li class="Banner-item">
-          <a class="Banner-link u-clickable" href="/tags/">Tags</a>
-        </li>
-      
-        
-        
-        <li class="Banner-item">
-          <a class="Banner-link u-clickable" href="/mountains/">Mountains</a>
-        </li>
-      
-        
-        
-          
-        
-        <li class="Banner-item">
-          <a class="Banner-link u-clickable" href="/feed.xml">RSS</a>
-        </li>
-      
-    </ul>
-  </div>
-</nav>
-
-  <main>
-    <div class="u-wrapper">
-      <div class="u-padding">
-        
-
-  
-  <header class="Heading">
-  <h1 class="Heading-title">
-    <a class="Heading-link u-clickable" href="/posts/ising-ca-part-2/" rel="bookmark">The Ising Model and CA, Part II: Thermodynamics in CA</a>
-  </h1>
-  
-    
-      <time datetime="2025-10-09T15:56:05&#43;05:30">October 9, 2025</time>
-    
-  
-</header>
-  <blockquote>
-<p><span style="color: gray;"></span></p></blockquote>
-<p><sub><sup><em>I just re-read my older posts and realized how bad I am at writing for an audience made of people other than myself&hellip; I am actively going to try and use less jargon from now on&hellip;.</em></sup></sub></p>
-<p>In the last post, we saw how thermodynamics in general works in CA. Now, we will specifically look at the Ising model.</p>
-
-
-
-
-<h2 id="the-ising-ca">
-  <a class="Heading-link u-clickable" href="/posts/ising-ca-part-2/#the-ising-ca">The Ising CA</a>
-</h2>
-<p>This one is not actually my invention, it has been explored by some of the earliest explorers of cellular automata. It has two states, &lsquo;up&rsquo; and &lsquo;down&rsquo;. The rules are pretty simple:</p>
-<p>We will only update a cell if the follwing two conditions are met:</p>
-<ul>
-<li>(x+y+t) is even (i.e. it followes an alternating chessboard pattern)</li>
-<li>The state flips if there are two adjacent up&rsquo;s and two adjacent down&rsquo;s</li>
-</ul>
-
-  
-
-  
-
-  
-
-
-
-
-
-  
-  
-
-
-
-      </div>
-    </div>
-  </main>
-  
-  <footer class="Footer">
-    <div class="u-wrapper">
-      <div class="u-padding u-noboosting">
-        Except where otherwise noted, content on this site is licensed under a &#32; <a href="http://creativecommons.org/licenses/by/4.0/" rel="license">Creative Commons Attribution 4.0 International License</a>.
-      </div>
-    </div>
-  </footer>
-
-</body>
-
-</html>
+<!doctype html><html lang=en-IN><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="
+What is the Ising model CA? How would you attach it to a heat bath?
+This is a multipart series. Read the others here:
+Part I: Thermodynamics in CA
+Part II: The Ising CA
+Aside: I just re-read my older posts and realized how bad I am at writing for an audience made of people other than myself&mldr; I am actively going to try and use less jargon from now on&mldr;. But unfortunately this series of posts would become wayyy too long if I try writing it for a general audience, so some jargon is inevitable."><meta name=color-scheme content="light dark"><meta name=generator content="Hugo 0.150.0"><title>The Ising Model and CA, Part II: The Ising CA | Chaotic Emergence</title><link href=https://Aaron-d-k.github.io/posts/ising-ca-part-2/ rel=canonical><link href=/css/base.min.d9fa76fa484b4226a7326171d076a49ccafbbc97d8b9caab0446b17a3ea5baa5.css rel=stylesheet integrity="sha256-2fp2+khLQianMmFx0HaknMr7vJfYucqrBEaxej6luqU=" crossorigin=anonymous><link href=/css/syntax.min.065df42d2be658bb8e0720297aadf469355a5ffaf863b00e3cce0627dd106ca0.css rel=stylesheet integrity="sha256-Bl30LSvmWLuOByApeq30aTVaX/r4Y7AOPM4GJ90QbKA=" crossorigin=anonymous></head><body><nav class=u-background><div class=u-wrapper><ul class=Banner><li class="Banner-item Banner-item--title"><a class="Banner-link u-clickable" href=/>Chaotic Emergence</a></li><li class=Banner-item><a class="Banner-link u-clickable" href=/about/>About</a></li><li class=Banner-item><a class="Banner-link u-clickable" href=/>Posts</a></li><li class=Banner-item><a class="Banner-link u-clickable" href=/tags/>Tags</a></li><li class=Banner-item><a class="Banner-link u-clickable" href=/mountains/>Mountains</a></li><li class=Banner-item><a class="Banner-link u-clickable" href=/feed.xml>RSS</a></li></ul></div></nav><main><div class=u-wrapper><div class=u-padding><header class=Heading><h1 class=Heading-title><a class="Heading-link u-clickable" href=/posts/ising-ca-part-2/ rel=bookmark>The Ising Model and CA, Part II: The Ising CA</a></h1><time datetime=2025-10-21T15:56:05+05:30>October 21, 2025</time></header><blockquote><p><span style=color:gray>What is the Ising model CA? How would you attach it to a heat bath?</span></p></blockquote><p><strong>This is a multipart series. Read the others here:</strong></p><p><strong><a href=../ising-ca-part-1/>Part I: Thermodynamics in CA</a></strong></p><p><strong><a href=../ising-ca-part-2/>Part II: The Ising CA</a></strong></p><p><span style=color:gray;font-size:2px>Aside: I just re-read my older posts and realized how bad I am at writing for an audience made of people other than myself&mldr; I am actively going to try and use less jargon from now on&mldr;. But unfortunately this series of posts would become wayyy too long if I try writing it for a general audience, so some jargon is inevitable.</span></p><p><em>Note: while doing the research for writing this post, I stumbled upon this paper: <a href=http://web.archive.org/web/20070824042140/http://thy.phy.bnl.gov/~creutz/mypubs/pub088.pdf>Michael Creutz , &ldquo;Deterministic Ising Dynamics,&rdquo; Annals of Physics, 167
+(1986) 62-76</a>. What the author tries to do there is actually very similar to what I am doing! They also design a purely deterministic CA to simulate the Ising model. But they seem to have taken a different approach where instead of having a single giant heat bath seperated from the main Ising sim, they couple a tiny heat bath of capacity 3 to each cell. This is actually&mldr; a really elegant idea. It requires only 16 states, and there is no need for a seperate heat bath. I still feel my method is much more fun, as it seems much more like a physical material, and this allows you to measure a lot of interesting quantities like thermal conductivity, by sandwitching it between two baths, similar to how you would measure it for a real material.</em></p><p>In the last post, we saw how thermodynamics in general works in CA. Now, we will specifically look at the Ising model.</p><h2 id=the-ising-ca><a class="Heading-link u-clickable" href=/posts/ising-ca-part-2/#the-ising-ca>The Ising CA</a></h2><p>This one is not actually my invention, it has been explored by some famous names in cellular automata, e.g. see page 4 <a href=https://people.csail.mit.edu/nhm/cc.pdf>here</a>. It has two states, &lsquo;up&rsquo; and &lsquo;down&rsquo;. The rules are pretty simple:</p><p>We will only update a cell if the follwing two conditions are met:</p><ul><li><span class=katex><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>y</mi><mo>+</mo><mi>t</mi></mrow><annotation encoding="application/x-tex">x+y+t</annotation></semantics></math></span>
+is even (i.e. the updates follow an alternating chessboard pattern)</li><li>The state flips if there are exactly two adjacent up and two adjacent down cells</li></ul><meta name=LifeViewer content="viewer textarea 30 hide limit /rules/ .rule"><script src=/js/lv-plugin.js></script><div class=viewer><textarea style=width:100%;max-width:100% rows=5>
+#C [[ ZOOM 30 THEME 19 ICONS GPS 1 ]]
+x = 5, y = 4, rule = ising_temp
+pHpIpHpIpH$pIpHpIpHpI$pHpIpHpIpH$pIpHpIpHpI!
+</textarea><br><canvas width=560 height=400><canvas></div><p>This conserves energy according to the definition of energy in the Ising model, as the number of adjacent up-down pairs is always constant.</p><p>It also happens to be reversible. Thw reverse rule happens to be itself, with the checkerboard flipped. To see this, what we do is that we apply the rule without flipping the chessboard pattern. Because of the chessboard pattern, the number of neighbours of a particular color for each changed cell remains the same, and so the exact same states gets flipped again. Hence the step gets reversed.</p><p>As we know that this rule is both reversible and energy-conserving, we can apply thermodynamics here.</p><p>But, here a problem is that unlike the previous case, we cannot assume all the energy locations are independent, so there is no obvious way to determine temperature. But the same definition still works: The energy needed to increase entropy by one unit.</p><p>To actually measure the entropy, there is a known formula, but it is very complicated. And the formula can be found only after you find the exact solution to the model, so I think it&rsquo;s cheating to use that. That is why to actually work with temperature, we couple it with a system whose temperature can be easily calculated.</p><p>Now, you can use this even without a heat bath to calculate the graph between energy density and magnetisation. Here is approximately how they would look (I got lazy, these are the graphs when it is coupled to the heat bath with slow energy loss, but they should look the same)</p><p><img src=/images/Evm.png alt="E vs m"></p><p>Some observations:</p><ul><li>I cut off the graph at low energies. This is because the system starts to get &lsquo;frozen&rsquo; and hence energy transfer becomes too slow. So you would have to wait for an impractically long time in order to reach equilibrium.</li><li>You see that
+<span class=katex><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∣</mi><mi>m</mi><mi mathvariant="normal">∣</mi></mrow><annotation encoding="application/x-tex">|m|</annotation></semantics></math></span>
+drops drastically between
+<span class=katex><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mn>0.15</mn></mrow><annotation encoding="application/x-tex">E=0.15</annotation></semantics></math></span>
+and
+<span class=katex><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mn>0.2</mn></mrow><annotation encoding="application/x-tex">E=0.2</annotation></semantics></math></span>
+. This is where the phase transition happens!</li><li>It is extremely noisy and not smooth. To get a proper smoothed graph we will have to take multiple samples at each energy level and do some averaging. This is STATISTICAL mechanics, so nothing is absolute, everything is always fluctuating.</li></ul><p>It gives the expected results, but the phase transition is not very satisfying to watch. To see proper one, we will need to move on to designing and interface between our heat bath and our Ising CA.</p><h2 id=the-interface><a class="Heading-link u-clickable" href=/posts/ising-ca-part-2/#the-interface>The Interface</a></h2><p>The interface basically consists of a row of cells that can carry energy both in the form of HPP energy packets and Ising bond energy.
+The big picture idea behind its evolution is very simple: In every step where it is active, it interconverts energy between its Ising form and its gas form. I&rsquo;ve tried to make this visible through the icons given to each state.
+The only problem is that we must respect the chessboard update pattern and reversibilty and all the conservation laws. To do this more easily, I imagined every step of the CA as consisting of two substeps:</p><ul><li>Energy movement</li><li>State permutation</li></ul><p>The movement of the HPP gas and the Ising spin flip both happen under step 1. The HPP reflection rule, interface energy tranfer and the chessboard alternation all happen under step 2.</p><p>By ensuring that both steps satisfy energy conservation and reversibility, we can prove the final rule does so too, which makes enforcing these much simpler.</p><p>The proof of reversiblity and energy conservation of the first part can be directly copied from the same proofs for HPP and the Ising CA.</p><p>For the second step, note that all possible energy transfers are compulsory, so on doing it again the energy just gets transferred back.</p><div class=viewer><textarea style=width:100%;max-width:100% rows=5>
+#C [[ ZOOM 50 THEME 19 ICONS ]]
+x = 8, y = 6, rule = ising_temp
+.pI$2.pIpH2.pI$.pOpPpKpLpOpP$PDNB.ELP$PHCANALP$.R5P!
+    </textarea><br><canvas width=560 height=400><canvas></div><p>So that is it! The interface has been successfully designed and now we can move on to analyzing the behaviour of the final system, in the next post.</p><h2 id=the-gory-details-the-golly-rule-format-and-nutshell><a class="Heading-link u-clickable" href=/posts/ising-ca-part-2/#the-gory-details-the-golly-rule-format-and-nutshell>The gory details: The Golly Rule format and Nutshell</a></h2><p>In order to actually run the CA, we have to specify them in some format. The standard format accepted by most widely used CA software is the <a href=https://golly.sourceforge.io/Help/formats.html#rule>rule table</a>.</p><p>In this format, rules are specified as transitions. For example the line</p><pre tabindex=0><code>0, 0,0,0,0,0,1,1,1, 1</code></pre><p>signifies that a 0 cell with exactly three 1 neighbours turns into a 1.
+It also supports variables, which allow you to compact multiple transitions into one line.</p><p>Unfortunately, it is a pain to write manually and hence <a href=https://github.com/supposedly/nutshell>Nutshell</a> was created. Nutshell adds several helpful features like independent variables and temporary symmetry switching.</p><p>While designing the rule, the number of nutshell transitions also turned out to be pretty large (54) so I decided to write a python script to generate the transitions for me. It also allowed me to properly incorporate the 2 step way of thinking about the rule that I had described. It also makes debugging and iterating much simpler.</p><p>So in the end, to generate the rule file you have to run my code and then copy-paste the output into a template. This template would contain the rule name and the icons for every state. Then we have to compile that using Nutshell. And then paste the output rule file into Golly. Which turns out to be an extremely convoluted workflow&mldr;.</p><p>Lot of the complexity arises due to the fact that energy conservation and reversability are both not natural concepts in the rule table format. Another complication is that the symmetry obeyed by the HPP gas involves a rotation and a state permutation, so it is not natively supported anywhere. So you have to manually specify all 4 directions seperately.</p><hr><footer><ul class=Tags><li class="Tags-item u-background"><a class="Tags-link u-clickable" href=/tags/all/ rel=tag>All</a></li><li class="Tags-item u-background"><a class="Tags-link u-clickable" href=/tags/cellular-automata/ rel=tag>Cellular Automata</a></li></ul></footer></div></div></main><footer class=Footer><div class=u-wrapper><div class="u-padding u-noboosting">Except where otherwise noted, content on this site is licensed under a   <a href=http://creativecommons.org/licenses/by/4.0/ rel=license>Creative Commons Attribution 4.0 International License</a>.</div></div></footer></body></html>

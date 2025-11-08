@@ -2,6 +2,7 @@
 title: 'Hello World!'
 date: 2025-09-23T00:07:39+05:30
 draft: false
+tags: ['All']
 ---
 
 ## Welcome

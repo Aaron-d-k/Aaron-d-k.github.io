@@ -2,9 +2,18 @@
 title: 'The Ising Model and CA, Part I: Thermodynamics in CA'
 date: 2025-09-23T00:07:56+05:30
 draft: false
+tags: ['All', 'Cellular Automata']
 ---
 
 > <span style="color: gray;">Can thermodynamics be applied to a cellular automaton? Can we use it to create a cellular automaton that reproduces the Ising model phase transition?</span>
+
+
+**This is a multipart series. Read the others here:**
+
+**[Part I: Thermodynamics in CA](../ising-ca-part-1/)**
+
+**[Part II: The Ising CA](../ising-ca-part-2/)**
+
 
 ### Introduction
 The [Ising model](https://en.wikipedia.org/wiki/Square_lattice_Ising_model) is a famous model of phase transition in a ferromagnetic material. It can be simulated using many methods, famously MCMC methods, leading to pretty looking simulations like this one:

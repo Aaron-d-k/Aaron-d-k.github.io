@@ -2,6 +2,7 @@
 title: 'Quadratic Fractals'
 date: 2025-10-09T01:15:16+05:30
 draft: false
+tags: ['All', 'Fractals']
 ---
 
 > <span style="color: gray;">How to make pretty pictures?</span>

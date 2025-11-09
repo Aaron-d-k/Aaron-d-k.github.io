@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="https://Aaron-d-k.github.io/xml/base.min.xml"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Categories on Chaotic Emergence</title><link>https://Aaron-d-k.github.io/categories/</link><description>Recent content in Categories on Chaotic Emergence</description><generator>Hugo</generator><language>en-IN</language><lastBuildDate>Tue, 21 Oct 2025 15:56:05 +0530</lastBuildDate><atom:link href="https://Aaron-d-k.github.io/categories/feed.xml" rel="self" type="application/rss+xml"/><item><title>The Ising Model and CA, Part II: The Ising CA</title><link>https://Aaron-d-k.github.io/posts/ising-ca-part-2/</link><pubDate>Tue, 21 Oct 2025 15:56:05 +0530</pubDate><guid>https://Aaron-d-k.github.io/posts/ising-ca-part-2/</guid><description>&lt;blockquote&gt;
 &lt;p&gt;&lt;span style="color: gray;"&gt;What is the Ising model CA? How would you attach it to a heat bath?&lt;/span&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;This is a multipart series. Read the others here:&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;&lt;a href="../ising-ca-part-1/"&gt;Part I: Thermodynamics in CA&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;&lt;a href="../ising-ca-part-2/"&gt;Part II: The Ising CA&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href="https://Aaron-d-k.github.io/posts/ising-ca-part-1/"&gt;Part I: Thermodynamics in CA&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href="https://Aaron-d-k.github.io/posts/ising-ca-part-2/"&gt;Part II: The Ising CA&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;span style="color: gray; font-size: 2px"&gt;Aside: I just re-read my older posts and realized how bad I am at writing for an audience made of people other than myself&amp;hellip; I am actively going to try and use less jargon from now on&amp;hellip;. But unfortunately this series of posts would become wayyy too long if I try writing it for a general audience, so some jargon is inevitable.&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Note: while doing the research for writing this post, I stumbled upon this paper: &lt;a href="http://web.archive.org/web/20070824042140/http://thy.phy.bnl.gov/~creutz/mypubs/pub088.pdf"&gt;Michael Creutz , &amp;ldquo;Deterministic Ising Dynamics,&amp;rdquo; Annals of Physics, 167
 (1986) 62-76&lt;/a&gt;. What the author tries to do there is actually very similar to what I am doing! They also design a purely deterministic CA to simulate the Ising model. But they seem to have taken a different approach where instead of having a single giant heat bath seperated from the main Ising sim, they couple a tiny heat bath of capacity 3 to each cell. This is actually&amp;hellip; a really elegant idea. It requires only 16 states, and there is no need for a seperate heat bath. I still feel my method is much more fun, as it seems much more like a physical material, and this allows you to measure a lot of interesting quantities like thermal conductivity, by sandwitching it between two baths, similar to how you would measure it for a real material.&lt;/em&gt;&lt;/p&gt;
@@ -62,7 +62,8 @@ and
 &lt;/h2&gt;
 &lt;p&gt;The interface basically consists of a row of cells that can carry energy both in the form of HPP energy packets and Ising bond energy.
 The big picture idea behind its evolution is very simple: In every step where it is active, it interconverts energy between its Ising form and its gas form. I&amp;rsquo;ve tried to make this visible through the icons given to each state.
-The only problem is that we must respect the chessboard update pattern and reversibilty and all the conservation laws. To do this more easily, I imagined every step of the CA as consisting of two substeps:&lt;/p&gt;
+The only problem is that we must respect the chessboard update pattern and reversibilty and all the conservation laws.&lt;/p&gt;
+&lt;p&gt;Proving this manually for every CA transition rule is not easy as there will be a lot of states because the two CAs have pretty different ways of energy conservation, and this means it is not straigtforward for the interface to conserve energy. Hence, to simplify matters, I decided to divide every step of the CA into two substeps:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Energy movement&lt;/li&gt;
 &lt;li&gt;State permutation&lt;/li&gt;
@@ -80,7 +81,7 @@ x = 8, y = 6, rule = ising_temp
  &lt;br&gt;
  &lt;canvas width="560" height="400"&gt;&lt;canvas&gt;
 &lt;/div&gt;
-&lt;p&gt;So that is it! The interface has been successfully designed and now we can move on to analyzing the behaviour of the final system, in the next post.&lt;/p&gt;
+&lt;p&gt;So that is it! The interface has been successfully designed, and now we can move on to analyzing the behaviour of the final system in the next post.&lt;/p&gt;
 
 
 
@@ -157,8 +158,8 @@ We can find out if points close to 0 always tend to get closer by calculating so
 &lt;p&gt;&lt;em&gt;Edited (Oct 14): Improved wording&lt;/em&gt;&lt;/p&gt;</description></item><item><title>The Ising Model and CA, Part I: Thermodynamics in CA</title><link>https://Aaron-d-k.github.io/posts/ising-ca-part-1/</link><pubDate>Tue, 23 Sep 2025 00:07:56 +0530</pubDate><guid>https://Aaron-d-k.github.io/posts/ising-ca-part-1/</guid><description>&lt;blockquote&gt;
 &lt;p&gt;&lt;span style="color: gray;"&gt;Can thermodynamics be applied to a cellular automaton? Can we use it to create a cellular automaton that reproduces the Ising model phase transition?&lt;/span&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;This is a multipart series. Read the others here:&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;&lt;a href="../ising-ca-part-1/"&gt;Part I: Thermodynamics in CA&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;&lt;a href="../ising-ca-part-2/"&gt;Part II: The Ising CA&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href="https://Aaron-d-k.github.io/posts/ising-ca-part-1/"&gt;Part I: Thermodynamics in CA&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;&lt;a href="https://Aaron-d-k.github.io/posts/ising-ca-part-2/"&gt;Part II: The Ising CA&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 
 
 

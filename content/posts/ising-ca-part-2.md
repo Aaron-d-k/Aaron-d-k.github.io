@@ -9,9 +9,9 @@ tags: ['All', 'Cellular Automata']
 
 **This is a multipart series. Read the others here:**
 
-**[Part I: Thermodynamics in CA](../ising-ca-part-1/)**
+**[Part I: Thermodynamics in CA](/posts/ising-ca-part-1/)**
 
-**[Part II: The Ising CA](../ising-ca-part-2/)**
+**[Part II: The Ising CA](/posts/ising-ca-part-2/)**
 
 <span style="color: gray; font-size: 2px">Aside: I just re-read my older posts and realized how bad I am at writing for an audience made of people other than myself... I am actively going to try and use less jargon from now on.... But unfortunately this series of posts would become wayyy too long if I try writing it for a general audience, so some jargon is inevitable.</span>
 
@@ -67,7 +67,9 @@ It gives the expected results, but the phase transition is not very satisfying t
 
 The interface basically consists of a row of cells that can carry energy both in the form of HPP energy packets and Ising bond energy. 
 The big picture idea behind its evolution is very simple: In every step where it is active, it interconverts energy between its Ising form and its gas form. I've tried to make this visible through the icons given to each state.
-The only problem is that we must respect the chessboard update pattern and reversibilty and all the conservation laws. To do this more easily, I imagined every step of the CA as consisting of two substeps:
+The only problem is that we must respect the chessboard update pattern and reversibilty and all the conservation laws. 
+
+Proving this manually for every CA transition rule is not easy as there will be a lot of states because the two CAs have pretty different ways of energy conservation, and this means it is not straigtforward for the interface to conserve energy. Hence, to simplify matters, I decided to divide every step of the CA into two substeps:
 - Energy movement
 - State permutation
 
@@ -91,8 +93,7 @@ x = 8, y = 6, rule = ising_temp
 </div>
 
 
-
-So that is it! The interface has been successfully designed and now we can move on to analyzing the behaviour of the final system, in the next post.
+So that is it! The interface has been successfully designed, and now we can move on to analyzing the behaviour of the final system in the next post.
 
 
 ## The gory details: The Golly Rule format and Nutshell

@@ -10,9 +10,9 @@ tags: ['All', 'Cellular Automata']
 
 **This is a multipart series. Read the others here:**
 
-**[Part I: Thermodynamics in CA](../ising-ca-part-1/)**
+**[Part I: Thermodynamics in CA](/posts/ising-ca-part-1/)**
 
-**[Part II: The Ising CA](../ising-ca-part-2/)**
+**[Part II: The Ising CA](/posts/ising-ca-part-2/)**
 
 
 ### Introduction

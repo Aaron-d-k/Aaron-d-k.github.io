@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?><?xml-stylesheet type="text/xsl" href="https://Aaron-d-k.github.io/xml/base.min.xml"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Chaotic Emergence</title><link>https://Aaron-d-k.github.io/</link><description>Recent content on Chaotic Emergence</description><generator>Hugo</generator><language>en-IN</language><lastBuildDate>Thu, 05 Mar 2026 01:47:23 +0530</lastBuildDate><atom:link href="https://Aaron-d-k.github.io/feed.xml" rel="self" type="application/rss+xml"/><item><title>Exploring AI Model Diversity</title><link>https://Aaron-d-k.github.io/posts/exploring-ai-model-diversity/</link><pubDate>Thu, 05 Mar 2026 01:47:23 +0530</pubDate><guid>https://Aaron-d-k.github.io/posts/exploring-ai-model-diversity/</guid><description>&lt;blockquote&gt;
-&lt;p&gt;&lt;span style="color: gray;"&gt;Exploring the properties of the different types of models you can get from training&lt;/span&gt;&lt;/p&gt;&lt;/blockquote&gt;
-&lt;p&gt;I was trying to learn the ropes of AI interpretability, and decided to train a small model for a simple binary classification task based on cellular automata. This has the advantage that its training data can be easily generated using a simple program, yet the features are pretty noisy like ‘real’ data. This is quite a nice toy problem, and it shows us what a huge variety of models you can find after training, even when using a constant set of hyperparameters.&lt;/p&gt;
-&lt;p&gt;The specific problem is this: Given the &lt;a href="https://conwaylife.com/wiki/Ash"&gt;ash&lt;/a&gt; created from either &lt;a href="https://en.wikipedia.org/wiki/Highlife_(cellular_automaton)"&gt;HighLife&lt;/a&gt; or &lt;a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"&gt;Conway’s Game of Life&lt;/a&gt; (CGOL), the model has to figure out which one is which.
+&lt;p&gt;&lt;span style="color: grey;"&gt;Exploring the properties of the different types of models you can get from training.&lt;/span&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;As a learning exercise, I trained a small model for a simple binary classification task based on cellular automata. The training data for this task can be easily generated using a simple program, yet the features are pretty noisy, which resembles ‘real’ data in a way. This makes it quite nice as a toy problem, and the results I found reveal the huge variety of models that can be found after training, even when using a constant set of hyperparameters.&lt;/p&gt;
+&lt;p&gt;The specific problem is this: Given a 128x128 board with the &lt;a href="https://conwaylife.com/wiki/Ash"&gt;ash&lt;/a&gt; created from either &lt;a href="https://en.wikipedia.org/wiki/Highlife_(cellular_automaton)"&gt;HighLife&lt;/a&gt; or &lt;a href="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"&gt;Conway’s Game of Life&lt;/a&gt; (CGOL), the model has to figure out which one is which.
 For context, an average soup from both is given here:&lt;/p&gt;
 &lt;img src="https://Aaron-d-k.github.io/images/highlife.gif" alt="highlife soup" style="display: block; margin: auto; width: 25%" /&gt; 
 &lt;div style="text-align:center; color: gray;"&gt;A HighLife soup&lt;/div&gt;
 &lt;img src="https://Aaron-d-k.github.io/images/life.gif" alt="life soup" style="display: block; margin: auto; width: 25%" /&gt; 
 &lt;div style="text-align:center; color: gray;"&gt;A CGOL soup&lt;/div&gt;
-&lt;p&gt;We have to wait till everything settles (could take 1000s of gens!) and then the leftover pattern is called its ash. The main differences are the presence of ‘traffic lights’ (those sets of 4 alternating lines) and ‘honey farms’ (another set of four item) in CGOL and the presence of an unnamed constellation in HighLife ash. There are also differences in the frequencies of the most common patterns, a nice comparison of frequency can be found on catagolue - &lt;a href="https://catagolue.hatsya.com/haul/b36s23/C1"&gt;Click under root to go to a HighLife haul&lt;/a&gt;, &lt;a href="https://catagolue.hatsya.com/statistics#Common%20objects:~:text=Common%20objects"&gt;CGOL frequency table&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Anyway, this seems like a perfect problem for a CNN to solve. There are few things to keep in mind, like the fact that spatial arrangement and exact distances are extremely critical here, so pooling might not be the best idea.
-The model I used has a residual pipeline, and it has been designed in a way such that you can pretty easily swap two layers, if you are careful about the stride and dilation. This allows for a lot of interesting experiments on how the model changes its internal representations. This is the architecture I am going to work with (in pytorch):&lt;/p&gt;
+&lt;p&gt;Once everything settles into periodically repeating patterns (could take thousands of steps!), the leftover pattern is called ash. The main differences are the presence of ‘traffic lights’ (those sets of four alternating lines) and ‘honey farms’ (another set of four items) in CGOL and the presence of an unnamed constellation in HighLife ash. There are also differences in the frequencies of the most common patterns. A nice comparison of frequency can be found on Catagolue - &lt;a href="https://catagolue.hatsya.com/haul/b36s23/C1"&gt;Click under root to go to a HighLife haul&lt;/a&gt;, &lt;a href="https://catagolue.hatsya.com/statistics#Common%20objects:~:text=Common%20objects"&gt;CGOL frequency table&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;At first glance, this is a perfect problem for a CNN to solve.
+The model I used has a residual pipeline, and it has been designed in a way such that you can pretty easily swap any two layers, if you are careful about the stride and dilation, as I will elaborate later. This allows for a lot of interesting experiments on how the model changes its internal representations. Also, spatial arrangement and exact distances are extremely critical here, so pooling isn&amp;rsquo;t a good idea. This is the architecture I am going to work with (in PyTorch):&lt;/p&gt;
 
  
 
@@ -64,13 +64,13 @@ The model I used has a residual pipeline, and it has been designed in a way such
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;[:,:,::&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,::&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;layers&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;](&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;extract&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;squeeze&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;I discovered that this model exhibits a very interesting phenomenon: after a good number of batches of training, when the loss has dropped to approximately 0.4, different training runs seemed to diverge in their behavior. Normal metrics like loss, test loss and error rate dropped normally with no notable difference from run to run, but in a lot of runs, ‘swapped metrics’ (loss and error when the last two layers are swapped) seemed to start climbing after this critical point rather than falling with loss.&lt;/p&gt;
+&lt;p&gt;I discovered that this model exhibits a very interesting phenomenon: after a good number of batches of training, when the loss has dropped to approximately 0.4, different training runs diverge in their behaviour. Normal metrics like loss, test loss and error rate decrease normally with no notable difference from run to run, but in a lot of runs, ‘swapped metrics’ (loss and error when the last two layers are swapped) seemed to start climbing after this critical point rather than falling with loss.&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://Aaron-d-k.github.io/images/swaplossconv.png" alt="Both lines stay close to each other"&gt;
 &lt;em&gt;A case where they are about the same&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://Aaron-d-k.github.io/images/swaplossdiv.png" alt="Both lines go far from each other after point"&gt;
+&lt;p&gt;&lt;img src="https://Aaron-d-k.github.io/images/swaplossdiv.png" alt="Both lines go far from each other after the point"&gt;
 &lt;em&gt;A case where they diverge&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;I trained a 128 models on the same data, and I chose 5 of the models which degraded the least under swap and a 5 of the ones that degraded the most for further analysis. Initially, I thought the models formed a binary, but further testing has showed that there is a rich variety of behaviors within each group itself, and swap loss itself forms a smeared spectrum. It is interesting that the other two things I tried, SAE and linear probing, did not have its results correlate much with swap loss.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://Aaron-d-k.github.io/images/swapvsorigaccu.png" alt="Swap eroor vs original error"&gt;&lt;/p&gt;
+&lt;p&gt;I trained 128 different models on the same data, but with the same hyperparameters. I then chose five of the models which degraded the least under swap and five of the ones that degraded the most for further analysis. Initially, I thought the models formed a binary, but further testing has shown that there is a wide variety of behaviours within each group itself, and swap loss itself forms a smeared spectrum. It is interesting that the other two things I tried, SAE and linear probing, did not have their results correlate much with swap loss.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://Aaron-d-k.github.io/images/swapvsorigaccu.png" alt="Swap error vs original error"&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;This is a heatmap for (swap error, original error) for the model checkpoints&lt;/em&gt;&lt;/p&gt;
 
 
@@ -79,7 +79,7 @@ The model I used has a residual pipeline, and it has been designed in a way such
 &lt;h3 id="swap-loss"&gt;
  &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/exploring-ai-model-diversity/#swap-loss"&gt;Swap loss&lt;/a&gt;
 &lt;/h3&gt;
-&lt;p&gt;So one important note: simply swapping two of the layers will not be very appropriate. This is because both would be used to working with data coming from a cell at a very specific displacement. Messing with this will give nonsensical results. In order to combat this, I used a technique where I modify each of the layers to act on the full grid rather than the strided version, and to do this, one must apply an appropriate dilation to each layer. This makes the layers more interchangeable and modular, and this is the metric I use everywhere in my analysis. Although strangely, even naive swapping seemed to work moderately well for some models (but worse than the corrected swapping), which I don’t have a very good explanation for.&lt;/p&gt;
+&lt;p&gt;So one important note: simply swapping two layers will not work very well. This is because both layers would be adapted to processing data coming from cells at specific displacements, which means that messing with it will give nonsensical results. In order to combat this, I used a technique where I modified each of the layers to act on the full grid rather than the strided version, and to do this, one must apply an appropriate dilation to each layer. This makes the layers more interchangeable and modular, and this is the metric I use everywhere in my analysis. Although strangely, even naive swapping seemed to work moderately well for some models (but worse than the corrected swapping), which I don’t have a very good explanation for.&lt;/p&gt;
 &lt;p&gt;Original:&lt;/p&gt;
 
 
@@ -504,7 +504,7 @@ The model I used has a residual pipeline, and it has been designed in a way such
 &lt;h3 id="sae-metrics"&gt;
  &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/exploring-ai-model-diversity/#sae-metrics"&gt;SAE metrics&lt;/a&gt;
 &lt;/h3&gt;
-&lt;p&gt;I trained a SAE (Sparse Auto-Encoder) with top 1 and tried seeing how much each model degraded when forced to use it. It struggles in the first layer and does pretty well in the final two. Which kinda makes sense: in the early layers when you can only see a small area, each cell could potentially be part of a huge variety of structures. But after that, you can basically classify each cell into a specific constellation.&lt;/p&gt;
+&lt;p&gt;I trained an SAE (Sparse Auto-Encoder) with top 1 and tried seeing how much each model degraded when forced to use it. It struggles in the first layer and does reasonably well in the final two, which does make sense: in the early layers, when you can only see a small area, each cell could potentially be part of a huge variety of structures. But after that, you can basically classify each cell into a specific constellation.&lt;/p&gt;
 &lt;table&gt;
  &lt;thead&gt;
  &lt;tr&gt;
@@ -603,16 +603,16 @@ The model I used has a residual pipeline, and it has been designed in a way such
 
 
 
-&lt;h3 id="visualizing-sae-features"&gt;
- &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/exploring-ai-model-diversity/#visualizing-sae-features"&gt;Visualizing SAE features&lt;/a&gt;
+&lt;h3 id="visualising-sae-features"&gt;
+ &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/exploring-ai-model-diversity/#visualising-sae-features"&gt;Visualising SAE features&lt;/a&gt;
 &lt;/h3&gt;
-&lt;p&gt;&lt;em&gt;Note: I used an older variant of the model for this, with r=2, but I don’t think the results should change much. They behaved identically to r=1 on most tests, but just run slower.&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;The main feature in both the models seems to be the same: the presence of traffic lights.&lt;/p&gt;
-&lt;p&gt;But there are quite a few challenges for any model looking to detect them, those being that traffic lights have 2 forms, they are quite often damaged, and that they can come in all possible grid alignments, which is troublesome for the cells in later layers which only see the field in multiples of 2/4/8 cells.&lt;/p&gt;
-&lt;p&gt;On analyzing a middle layer in a certain model, I could cleanly separate out different features corresponding to detecting the traffic light at certain set grid alignments.&lt;/p&gt;
-&lt;p&gt;&lt;img src="https://Aaron-d-k.github.io/images/SAEfeatures.png" alt="Example of visualized features"&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;(To visualize it nicely, I have shown the expanded version of the model, as described earlier. Also, the features shown here are 3 of the cleanest I could find, many features were just messier variants of ‘traffic light at certain alignment’ detector. Another interesting observation is that it seems to treat honey farms as funny traffic lights.)&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;But another model I analyzed just seemed to have one super-features that had data of all the traffic lights (and sometimes honey farms too) at all alignments and shifts. And this feature seemed to be so powerful that most of the features were also just slightly variants of that feature. Many of the models had lot of other minor features that were kind-of interpretable, but nothing as notable. I remember seeing features corresponding to vertical blinkers etc. I am not sure how well these observations generalize across models though.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Note: I used an older variant of the model for this, with r=2, but I don’t think the results should change much. They behaved identically to r=1 on most tests, but just ran slower.&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;The main feature in both models seems to be the same: the presence of traffic lights.&lt;/p&gt;
+&lt;p&gt;But there are quite a few challenges for any model looking to detect them: traffic lights have two forms, they are quite often damaged, and they can come in all possible grid alignments, which is troublesome for the cells in later layers, as they only see the field in multiples of 2/4/8 cells.&lt;/p&gt;
+&lt;p&gt;On analysing a middle layer in a certain model, I could cleanly separate out different features corresponding to detecting the traffic light at certain set grid alignments.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://Aaron-d-k.github.io/images/SAEfeatures.png" alt="Example of visualised features"&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;(To visualise it nicely, I have shown the expanded version of the model, as described earlier. Also, the features shown here are three of the cleanest I could find; many features were just messier variants of a ‘traffic light at certain alignment’ detector. Another interesting observation is that it seems to treat honey farms as funny traffic lights.)&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;But another model I analysed just seemed to have one super-feature that had data of all the traffic lights (and sometimes honey farms too) at all alignments and shifts. And this feature seemed to be so powerful that most of the other features were also just slight variants of that feature. Many of the models had a lot of other minor features that were kind of interpretable, but nothing notable. I also remember seeing features capturing things like vertical blinkers. I only analysed two models here, so take these findings with a grain of salt.&lt;/p&gt;
 
 
 
@@ -745,7 +745,7 @@ The model I used has a residual pipeline, and it has been designed in a way such
 &lt;h3 id="properties-of-the-weight-matrices"&gt;
  &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/exploring-ai-model-diversity/#properties-of-the-weight-matrices"&gt;Properties of the weight matrices&lt;/a&gt;
 &lt;/h3&gt;
-&lt;p&gt;The weight matrices broadly seem to be similar. We see highly ill-conditioned matrices and other features on both sides of the spectrum. It is interesting how much variety we see on both sides. Also, the extra training I do before detailed analysis usually increases matrix norms, which is expected as the model becomes more confidant in its responses.&lt;/p&gt;
+&lt;p&gt;The weight matrices broadly seem to be similar. We see highly ill-conditioned matrices and other features on both sides of the spectrum. It is interesting how much variety we see on both sides. Also, the extra training I do before detailed analysis usually increases matrix norms, which is expected as the model becomes more confident in its predictions.&lt;/p&gt;
 
 
 
@@ -753,8 +753,8 @@ The model I used has a residual pipeline, and it has been designed in a way such
 &lt;h3 id="linear-probing-the-answer"&gt;
  &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/exploring-ai-model-diversity/#linear-probing-the-answer"&gt;Linear Probing the answer&lt;/a&gt;
 &lt;/h3&gt;
-&lt;p&gt;Linear Probing was done to the average value of the activation vector over all the cells. (I also tried taking max, but that completely flopped)&lt;/p&gt;
-&lt;p&gt;For most models, linear probing gave good results in the last layer, and bad results in the first one. The middle layer showed more interesting behavior, with two models showing much higher error rate that the other models.&lt;/p&gt;
+&lt;p&gt;Linear probing was done on the average value of the activation vector over all the cells. (I also tried taking max, but that completely flopped)&lt;/p&gt;
+&lt;p&gt;For most models, linear probing gave good results in the last layer, and poor results in the first one. The middle layer showed more interesting behaviour, with two models showing much higher error rates than the other models.&lt;/p&gt;
 &lt;table&gt;
  &lt;thead&gt;
  &lt;tr&gt;
@@ -849,7 +849,7 @@ The model I used has a residual pipeline, and it has been designed in a way such
  &lt;/tr&gt;
  &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;We can extract a vector from each linear probe’s weights. You could think of this vector as the sort of direction corresponding to the feature of highlifeness. I tried creating a cosine similarity matrix from these to see how common the representations were. This showed some interesting observations, with layers with similar linear probe error rates showing higher similarity, and overall the cosine similarity tended to be positive. But there were a lot of oddities and exceptions, so its best not to come to any conclusions using this.&lt;/p&gt;
+&lt;p&gt;We can extract a vector from each linear probe’s weights. You could think of this vector as the sort of direction corresponding to the feature of highlifeness. I tried creating a cosine similarity matrix from these to see how common the representations were. This showed some interesting observations, with layers with similar linear probe error rates showing higher similarity, and overall, the cosine similarity tended to be positive. But there were a lot of oddities and exceptions, so it&amp;rsquo;s best not to come to any conclusions using this.&lt;/p&gt;
 
 
 
@@ -857,9 +857,9 @@ The model I used has a residual pipeline, and it has been designed in a way such
 &lt;h2 id="hypothesis"&gt;
  &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/exploring-ai-model-diversity/#hypothesis"&gt;Hypothesis?&lt;/a&gt;
 &lt;/h2&gt;
-&lt;p&gt;From my experiments, I haven&amp;rsquo;t really found any better hypothesis than that the model just sometimes randomly decides to either share or not share a common representation of the core features between layers at the critical point depending on the initialization.&lt;/p&gt;
-&lt;p&gt;For the record, my initial hypothesis was that there were two types of models, as classified by their swap loss, which had unique behavior under other analysis like SAE and linear probes too. But further testing has convinced me that such relations do not hold, and that most of my initial results were quirks of the specific models I happened to get rather than general phenomena. And that there aren&amp;rsquo;t two well seperated classes, but a spectrum.&lt;/p&gt;
-&lt;p&gt;This also tells us that the model and the problem are complicated enough that two random models vary among several unrelated axes.&lt;/p&gt;
+&lt;p&gt;From my experiments, I haven&amp;rsquo;t really found any better hypothesis than that the model just sometimes randomly decides to either share or not share a common representation of the core features between layers at the critical point, depending on the initialisation.&lt;/p&gt;
+&lt;p&gt;For the record, my initial hypothesis was that there were two types of models, as classified by their swap loss, which had unique behaviour under other analyses like SAE and linear probes, too. But further testing has convinced me that such relations do not hold, and that most of my initial results were quirks of the specific models I happened to get rather than general phenomena. And that there aren&amp;rsquo;t two well-seperated classes, but a spectrum.&lt;/p&gt;
+&lt;p&gt;This also tells us that the model and the problem are complicated enough that two random models vary along several unrelated axes.&lt;/p&gt;
 
 
 
@@ -867,18 +867,18 @@ The model I used has a residual pipeline, and it has been designed in a way such
 &lt;h2 id="conclusion"&gt;
  &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/exploring-ai-model-diversity/#conclusion"&gt;Conclusion&lt;/a&gt;
 &lt;/h2&gt;
-&lt;p&gt;From exploring the SAE, my conclusion is that all the AIs have learnt basically the same thing: the rule is determined by the exact density of traffic lights (and honey farms?) compared to the total density of objects.&lt;/p&gt;
-&lt;p&gt;It is also interesting how the model seems to focus so much of its effort on traffic lights and has learnt to collapse both TL phases (and honey farms) into one feature. This was unexpected, as I thought it would also use honey farms and highlife constellation as a separate feature, but in hindsight it makes sense that it would devote so much of its capacity to ensure that no TL, regardless of phase/position/damage would go undetected.&lt;/p&gt;
-&lt;p&gt;It seems interesting that there are so many distinct basins of behavior arising from the exact same training data. I haven’t tried doing this for other models to see if this sort of split is observed even there, so it is entirely possible that this behavior is unique to this idiosyncratic architecture I have been using.&lt;/p&gt;
-&lt;p&gt;I am still pretty confused about many aspects of this toy model, like exactly what computation seems to occur at each layer for a model.&lt;/p&gt;
-&lt;p&gt;In hindsight, I should’ve used a multi-classification task (maybe with B3/S23,B36/S23,B38/S23,B3/S238 etc) rather than a binary problem. I feel this would’ve made a lot more techniques accessible and testable.&lt;/p&gt;</description></item><item><title>The Ising Model and CA, Part II: The Ising CA</title><link>https://Aaron-d-k.github.io/posts/ising-ca-part-2/</link><pubDate>Tue, 21 Oct 2025 15:56:05 +0530</pubDate><guid>https://Aaron-d-k.github.io/posts/ising-ca-part-2/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;From exploring the SAE, my conclusion is that all the models have learnt basically the same thing: the rule is determined by the exact density of traffic lights (and honey farms?) compared to the total density of objects.&lt;/p&gt;
+&lt;p&gt;It is also interesting how the model seems to focus so much of its effort on traffic lights and has learnt to collapse both TL phases (and honey farms) into one feature. This was unexpected, as I thought it would also use honey farms and highlife constellation as a separate feature, but in hindsight, it makes sense that it would devote so much of its capacity to ensure that no TL, regardless of phase/position/damage, would go undetected.&lt;/p&gt;
+&lt;p&gt;It seems interesting that there are so many distinct basins of behaviour arising from the exact same training data. I haven’t tried doing this for other models to see if this sort of split is observed even there, so this behaviour may be unique to the idiosyncratic architecture I have been using.&lt;/p&gt;
+&lt;p&gt;Many aspects of this toy model remain unexplained, like what exactly is the computation occuring at each layer of the model.&lt;/p&gt;
+&lt;p&gt;I should’ve used a multi-classification task (maybe with B3/S23, B36/S23, B38/S23, B3/S238, etc.) rather than a binary problem. This would’ve made a lot more interpretability techniques accessible and testable.&lt;/p&gt;</description></item><item><title>The Ising Model and CA, Part II: The Ising CA</title><link>https://Aaron-d-k.github.io/posts/ising-ca-part-2/</link><pubDate>Tue, 21 Oct 2025 15:56:05 +0530</pubDate><guid>https://Aaron-d-k.github.io/posts/ising-ca-part-2/</guid><description>&lt;blockquote&gt;
 &lt;p&gt;&lt;span style="color: gray;"&gt;What is the Ising model CA? How would you attach it to a heat bath?&lt;/span&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;&lt;strong&gt;This is a multipart series. Read the others here:&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;&lt;a href="https://Aaron-d-k.github.io/posts/ising-ca-part-1/"&gt;Part I: Thermodynamics in CA&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;&lt;a href="https://Aaron-d-k.github.io/posts/ising-ca-part-2/"&gt;Part II: The Ising CA&lt;/a&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;&lt;span style="color: gray; font-size: 2px"&gt;Aside: I just re-read my older posts and realized how bad I am at writing for an audience made of people other than myself&amp;hellip; I am actively going to try and use less jargon from now on&amp;hellip;. But unfortunately this series of posts would become wayyy too long if I try writing it for a general audience, so some jargon is inevitable.&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span style="color: grey; font-size: 2px"&gt;Aside: I just re-read my older posts and realised how bad I am at writing for an audience made of people other than myself&amp;hellip; I am actively going to try and use less jargon from now on&amp;hellip;. But unfortunately this series of posts would become wayyy too long if I try writing it for a general audience, so some jargon is inevitable.&lt;/span&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;Note: while doing the research for writing this post, I stumbled upon this paper: &lt;a href="http://web.archive.org/web/20070824042140/http://thy.phy.bnl.gov/~creutz/mypubs/pub088.pdf"&gt;Michael Creutz , &amp;ldquo;Deterministic Ising Dynamics,&amp;rdquo; Annals of Physics, 167
-(1986) 62-76&lt;/a&gt;. What the author tries to do there is actually very similar to what I am doing! They also design a purely deterministic CA to simulate the Ising model. But they seem to have taken a different approach where instead of having a single giant heat bath seperated from the main Ising sim, they couple a tiny heat bath of capacity 3 to each cell. This is actually&amp;hellip; a really elegant idea. It requires only 16 states, and there is no need for a seperate heat bath. I still feel my method is much more fun, as it seems much more like a physical material, and this allows you to measure a lot of interesting quantities like thermal conductivity, by sandwitching it between two baths, similar to how you would measure it for a real material.&lt;/em&gt;&lt;/p&gt;
+(1986) 62-76&lt;/a&gt;. What the author tries to do there is actually very similar to what I am doing! They also design a purely deterministic CA to simulate the Ising model. But they seem to have taken a different approach, where instead of having a single giant heat bath separated from the main Ising arena, they couple a tiny heat bath of capacity 3 to each cell. This is actually&amp;hellip; a really elegant idea. It requires only 16 states, and there is no need for a separate heat bath. I still feel my method is much more fun, as it seems much more like a physical material, and this allows you to measure a lot of interesting quantities like thermal conductivity, by sandwiching it between two baths, similar to how you would measure it for a real material.&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;In the last post, we saw how thermodynamics in general works in CA. Now, we will specifically look at the Ising model.&lt;/p&gt;
 
 
@@ -887,8 +887,8 @@ The model I used has a residual pipeline, and it has been designed in a way such
 &lt;h2 id="the-ising-ca"&gt;
  &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/ising-ca-part-2/#the-ising-ca"&gt;The Ising CA&lt;/a&gt;
 &lt;/h2&gt;
-&lt;p&gt;This one is not actually my invention, it has been explored by some famous names in cellular automata, e.g. see page 4 &lt;a href="https://people.csail.mit.edu/nhm/cc.pdf"&gt;here&lt;/a&gt;. It has two states, &amp;lsquo;up&amp;rsquo; and &amp;lsquo;down&amp;rsquo;. The rules are pretty simple:&lt;/p&gt;
-&lt;p&gt;We will only update a cell if the follwing two conditions are met:&lt;/p&gt;
+&lt;p&gt;This one is not actually my invention; it has been explored by some famous names in cellular automata, e.g. see page 4 &lt;a href="https://people.csail.mit.edu/nhm/cc.pdf"&gt;here&lt;/a&gt;. It has two states, &amp;lsquo;up&amp;rsquo; and &amp;lsquo;down&amp;rsquo;. The rules are pretty simple:&lt;/p&gt;
+&lt;p&gt;We will only update a cell if the following two conditions are met:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
 &lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;x&lt;/mi&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mi&gt;y&lt;/mi&gt;&lt;mo&gt;+&lt;/mo&gt;&lt;mi&gt;t&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;x+y+t&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
@@ -907,10 +907,10 @@ pHpIpHpIpH$pIpHpIpHpI$pHpIpHpIpH$pIpHpIpHpI!
  &lt;canvas width="560" height="400"&gt;&lt;canvas&gt;
 &lt;/div&gt;
 &lt;p&gt;This conserves energy according to the definition of energy in the Ising model, as the number of adjacent up-down pairs is always constant.&lt;/p&gt;
-&lt;p&gt;It also happens to be reversible. Thw reverse rule happens to be itself, with the checkerboard flipped. To see this, what we do is that we apply the rule without flipping the chessboard pattern. Because of the chessboard pattern, the number of neighbours of a particular color for each changed cell remains the same, and so the exact same states gets flipped again. Hence the step gets reversed.&lt;/p&gt;
-&lt;p&gt;As we know that this rule is both reversible and energy-conserving, we can apply thermodynamics here.&lt;/p&gt;
-&lt;p&gt;But, here a problem is that unlike the previous case, we cannot assume all the energy locations are independent, so there is no obvious way to determine temperature. But the same definition still works: The energy needed to increase entropy by one unit.&lt;/p&gt;
-&lt;p&gt;To actually measure the entropy, there is a known formula, but it is very complicated. And the formula can be found only after you find the exact solution to the model, so I think it&amp;rsquo;s cheating to use that. That is why to actually work with temperature, we couple it with a system whose temperature can be easily calculated.&lt;/p&gt;
+&lt;p&gt;It also happens to be reversible. The reverse rule happens to be itself, with the checkerboard flipped. To see this, what we do is apply the rule without flipping the chessboard pattern. Because of the chessboard pattern, the number of neighbours of a particular colour for each changed cell remains the same, and so the exact same cells get flipped again. Hence, the step gets reversed.&lt;/p&gt;
+&lt;p&gt;As we know that this rule is both reversible and energy-conserving, we can apply the principles of thermodynamics here.&lt;/p&gt;
+&lt;p&gt;But, here, a problem is that, unlike the previous case, we cannot assume all the energy locations are independent, so there is no obvious way to determine the temperature. But the same definition still works: The energy needed to increase entropy by one unit.&lt;/p&gt;
+&lt;p&gt;To actually measure the entropy, there is a known formula, but it is very complicated. And the formula can be found only after you find the exact solution to the model, so I think it&amp;rsquo;s cheating to use that. That is why, to actually work with temperature, we couple it with a system whose temperature can be easily calculated.&lt;/p&gt;
 &lt;p&gt;Now, you can use this even without a heat bath to calculate the graph between energy density and magnetisation. Here is approximately how they would look (I got lazy, these are the graphs when it is coupled to the heat bath with slow energy loss, but they should look the same)&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://Aaron-d-k.github.io/images/Evm.png" alt="E vs m"&gt;&lt;/p&gt;
 &lt;p&gt;Some observations:&lt;/p&gt;
@@ -923,9 +923,9 @@ pHpIpHpIpH$pIpHpIpHpI$pHpIpHpIpH$pIpHpIpHpI!
 and 
 &lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;E&lt;/mi&gt;&lt;mo&gt;=&lt;/mo&gt;&lt;mn&gt;0.2&lt;/mn&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;E=0.2&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
 . This is where the phase transition happens!&lt;/li&gt;
-&lt;li&gt;It is extremely noisy and not smooth. To get a proper smoothed graph we will have to take multiple samples at each energy level and do some averaging. This is STATISTICAL mechanics, so nothing is absolute, everything is always fluctuating.&lt;/li&gt;
+&lt;li&gt;It is extremely noisy and not smooth. To get a properly smoothed graph, we will have to take multiple samples at each energy level and do some averaging. This is STATISTICAL mechanics, so nothing is absolute; everything is always fluctuating.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;It gives the expected results, but the phase transition is not very satisfying to watch. To see proper one, we will need to move on to designing and interface between our heat bath and our Ising CA.&lt;/p&gt;
+&lt;p&gt;It gives the expected results, but the phase transition is not very satisfying to watch. To see a proper one, we will need to move on to designing an interface between our heat bath and our Ising CA.&lt;/p&gt;
 
 
 
@@ -933,18 +933,18 @@ and
 &lt;h2 id="the-interface"&gt;
  &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/ising-ca-part-2/#the-interface"&gt;The Interface&lt;/a&gt;
 &lt;/h2&gt;
-&lt;p&gt;The interface basically consists of a row of cells that can carry energy both in the form of HPP energy packets and Ising bond energy.
+&lt;p&gt;The interface consists of a row of cells that can carry energy both in the form of HPP energy packets and Ising bonds.
 The big picture idea behind its evolution is very simple: In every step where it is active, it interconverts energy between its Ising form and its gas form. I&amp;rsquo;ve tried to make this visible through the icons given to each state.
-The only problem is that we must respect the chessboard update pattern and reversibilty and all the conservation laws.&lt;/p&gt;
-&lt;p&gt;Proving this manually for every CA transition rule is not easy as there will be a lot of states because the two CAs have pretty different ways of energy conservation, and this means it is not straigtforward for the interface to conserve energy. Hence, to simplify matters, I decided to divide every step of the CA into two substeps:&lt;/p&gt;
+The only problem is that we must respect the chessboard update pattern, reversibility, and all the conservation laws.&lt;/p&gt;
+&lt;p&gt;Proving this manually for every CA transition rule is not easy, as there will be a lot of states because the two CAs have pretty different ways of conserving energy, and this means it is not straightforward for the interface to conserve energy. Hence, to simplify matters, I decided to divide every step of the CA into two substeps:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;Energy movement&lt;/li&gt;
 &lt;li&gt;State permutation&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;The movement of the HPP gas and the Ising spin flip both happen under step 1. The HPP reflection rule, interface energy tranfer and the chessboard alternation all happen under step 2.&lt;/p&gt;
+&lt;p&gt;The movement of the HPP gas and the Ising spin flip both happen under step 1. The HPP reflection rule, interface energy transfer and the chessboard alternation all happen under step 2.&lt;/p&gt;
 &lt;p&gt;By ensuring that both steps satisfy energy conservation and reversibility, we can prove the final rule does so too, which makes enforcing these much simpler.&lt;/p&gt;
-&lt;p&gt;The proof of reversiblity and energy conservation of the first part can be directly copied from the same proofs for HPP and the Ising CA.&lt;/p&gt;
-&lt;p&gt;For the second step, note that all possible energy transfers are compulsory, so on doing it again the energy just gets transferred back.&lt;/p&gt;
+&lt;p&gt;The proof of reversibility and energy conservation of the first part can be directly copied from the same proofs for HPP and the Ising CA.&lt;/p&gt;
+&lt;p&gt;For the second step, note that all possible energy transfers are compulsory, so when doing it again, the energy just gets transferred back.&lt;/p&gt;
 &lt;div class="viewer"&gt;
  &lt;textarea style="width: 100%; max-width: 100%;" rows="5"&gt;
 #C [[ ZOOM 50 THEME 19 ICONS ]]
@@ -954,7 +954,7 @@ x = 8, y = 6, rule = ising_temp
  &lt;br&gt;
  &lt;canvas width="560" height="400"&gt;&lt;canvas&gt;
 &lt;/div&gt;
-&lt;p&gt;So that is it! The interface has been successfully designed, and now we can move on to analyzing the behaviour of the final system in the next post.&lt;/p&gt;
+&lt;p&gt;So that is it! The interface has been successfully designed, and now we can move on to analysing the behaviour of the final system in the next post.&lt;/p&gt;
 
 
 
@@ -962,28 +962,28 @@ x = 8, y = 6, rule = ising_temp
 &lt;h2 id="the-gory-details-the-golly-rule-format-and-nutshell"&gt;
  &lt;a class="Heading-link u-clickable" href="https://Aaron-d-k.github.io/posts/ising-ca-part-2/#the-gory-details-the-golly-rule-format-and-nutshell"&gt;The gory details: The Golly Rule format and Nutshell&lt;/a&gt;
 &lt;/h2&gt;
-&lt;p&gt;In order to actually run the CA, we have to specify them in some format. The standard format accepted by most widely used CA software is the &lt;a href="https://golly.sourceforge.io/Help/formats.html#rule"&gt;rule table&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;In this format, rules are specified as transitions. For example the line&lt;/p&gt;
+&lt;p&gt;To actually run the CA, we have to specify it in some standard format. The CA rule format accepted by most CA software is the &lt;a href="https://golly.sourceforge.io/Help/formats.html#rule"&gt;rule table&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;In this format, rules are specified as transitions. For example, the line&lt;/p&gt;
 
  
 
 &lt;pre tabindex="0"&gt;&lt;code&gt;0, 0,0,0,0,0,1,1,1, 1&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;signifies that a 0 cell with exactly three 1 neighbours turns into a 1.
 It also supports variables, which allow you to compact multiple transitions into one line.&lt;/p&gt;
-&lt;p&gt;Unfortunately, it is a pain to write manually and hence &lt;a href="https://github.com/supposedly/nutshell"&gt;Nutshell&lt;/a&gt; was created. Nutshell adds several helpful features like independent variables and temporary symmetry switching.&lt;/p&gt;
-&lt;p&gt;While designing the rule, the number of nutshell transitions also turned out to be pretty large (54) so I decided to write a python script to generate the transitions for me. It also allowed me to properly incorporate the 2 step way of thinking about the rule that I had described. It also makes debugging and iterating much simpler.&lt;/p&gt;
-&lt;p&gt;So in the end, to generate the rule file you have to run my code and then copy-paste the output into a template. This template would contain the rule name and the icons for every state. Then we have to compile that using Nutshell. And then paste the output rule file into Golly. Which turns out to be an extremely convoluted workflow&amp;hellip;.&lt;/p&gt;
-&lt;p&gt;Lot of the complexity arises due to the fact that energy conservation and reversability are both not natural concepts in the rule table format. Another complication is that the symmetry obeyed by the HPP gas involves a rotation and a state permutation, so it is not natively supported anywhere. So you have to manually specify all 4 directions seperately.&lt;/p&gt;
+&lt;p&gt;Unfortunately, it is a pain to write manually, so &lt;a href="https://github.com/supposedly/nutshell"&gt;Nutshell&lt;/a&gt; was created. Nutshell adds several helpful features, like independent variables and temporary symmetry switching.&lt;/p&gt;
+&lt;p&gt;While designing the rule, the number of nutshell transitions also turned out to be pretty large (54), so I decided to write a Python script to generate the transitions for me. It also allowed me to properly incorporate the 2 step way of thinking about the rule that I had described. It also makes debugging and iterating much simpler.&lt;/p&gt;
+&lt;p&gt;So in the end, to generate the rule file, you have to run my code and then copy-paste the output into a template. This template would contain the rule name and the icons for every state. Then we have to compile that using Nutshell. And then paste the output rule file into Golly. Which turns out to be an extremely convoluted workflow&amp;hellip;.&lt;/p&gt;
+&lt;p&gt;A lot of the complexity arises because energy conservation and reversibility are not natural concepts in the rule table format. Another complication is that the symmetry obeyed by the HPP gas involves a rotation and a state permutation, so it is not natively supported anywhere. So you have to manually specify all four directions separately.&lt;/p&gt;
 &lt;hr /&gt;</description></item><item><title>Quadratic Fractals</title><link>https://Aaron-d-k.github.io/posts/quadratic-fractals/</link><pubDate>Thu, 09 Oct 2025 01:15:16 +0530</pubDate><guid>https://Aaron-d-k.github.io/posts/quadratic-fractals/</guid><description>&lt;blockquote&gt;
 &lt;p&gt;&lt;span style="color: gray;"&gt;How to make pretty pictures?&lt;/span&gt;&lt;/p&gt;&lt;/blockquote&gt;
 &lt;p&gt;I love fractals! Mostly because I think they look really pretty, but also because they show us how much detail and complexity is hidden even in the simplest math.&lt;/p&gt;
-&lt;p&gt;Recently, I was trying to learn about heuristic algorithms. These are algorithms that don&amp;rsquo;t always give the best answer, but they are usually much faster and easier to run. I thought that trying to find fractals that are as intricate as possible sounds like a nice problem to try, as it is very hard to go through all possibilities. Here are some samples of the results I managed to get: (Hopefully my color palette isn&amp;rsquo;t too painful to look at)&lt;/p&gt;
+&lt;p&gt;Recently, I was trying to learn about heuristic algorithms. These are algorithms that don&amp;rsquo;t always give the best answer, but they are usually much faster and easier to run. I thought that trying to find fractals that are as intricate as possible sounds like a nice problem to try, as it is very hard to go through all possibilities. Here are some samples of the results I managed to get: (Hopefully my colour palette isn&amp;rsquo;t too painful to look at)&lt;/p&gt;
 &lt;p&gt;&lt;img src="https://raw.githubusercontent.com/Aaron-d-k/Quadratic-fractals/refs/heads/main/savedfracimg/fractal-1759949466.png" alt="very dusty" title="very dusty"&gt;
 &lt;img src="https://raw.githubusercontent.com/Aaron-d-k/Quadratic-fractals/refs/heads/main/savedfracimg/fractal-1759949559.png" alt="reminds me of a sea shell" title="reminds me of a sea shell"&gt;
 &lt;img src="https://raw.githubusercontent.com/Aaron-d-k/Quadratic-fractals/refs/heads/main/savedfracimg/fractal-1759949756.png" alt="stretchy" title="stretchy"&gt;
 &lt;img src="https://raw.githubusercontent.com/Aaron-d-k/Quadratic-fractals/refs/heads/main/savedfracimg/fractal-1759951371.png" alt="boooo" title="boooo"&gt;
 &lt;img src="https://raw.githubusercontent.com/Aaron-d-k/Quadratic-fractals/refs/heads/main/savedfracimg/fractal-1759950038.png" alt="somehow looks muscular&amp;hellip; lol" title="somehow looks muscular... lol"&gt;&lt;/p&gt;
-&lt;p&gt;These fractals are all part of a family of fractals, very similar to a famous fractal called the &amp;lsquo;filled julia set&amp;rsquo;. To understand what the image shows, we have to choose a function 
+&lt;p&gt;These fractals are all part of a family of fractals, very similar to a famous fractal called the &amp;lsquo;filled Julia set&amp;rsquo;. To understand what the image shows, we have to choose a function 
 &lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;f&lt;/mi&gt;&lt;mo&gt;:&lt;/mo&gt;&lt;msup&gt;&lt;mi mathvariant="double-struck"&gt;R&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;mo&gt;→&lt;/mo&gt;&lt;msup&gt;&lt;mi mathvariant="double-struck"&gt;R&lt;/mi&gt;&lt;mn&gt;2&lt;/mn&gt;&lt;/msup&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;f:\mathbb{R}^2 \rightarrow \mathbb{R}^2&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
 
 &lt;/p&gt;
@@ -1006,27 +1006,27 @@ This takes in a point from the X-Y plane and returns another one. We plot the X-
  is determined by 10 numbers 
 &lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi&gt;a&lt;/mi&gt;&lt;mo separator="true"&gt;,&lt;/mo&gt;&lt;mo&gt;⋯&lt;/mo&gt;&lt;mtext&gt; &lt;/mtext&gt;&lt;mo separator="true"&gt;,&lt;/mo&gt;&lt;mi&gt;j&lt;/mi&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;a,\cdots ,j&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
 . It is very hard to find a good set of numbers, as most choices just lead to boring blobs or just emptiness. So, these numbers were determined using an algorithm called simulated annealing, which basically tries to mimic how nature seems to find good solutions by randomly jumping around. The objective it tried to maximise was basically the number of pixel changes at boundaries, i.e, it tried to make the boundary between the two regions as large as possible.&lt;/p&gt;
-&lt;p&gt;There is a famous family of fractals called &lt;a href="https://en.wikipedia.org/wiki/Julia_set#Quadratic%20polynomials"&gt;filled julia sets&lt;/a&gt; which are related to another fractal called the Mandelbrot set. Some filled julia sets are associated with the main heart shaped region (i.e. cardioid) of the Mandelbrot set. It is interesting that these are a subset of our family of fractals, but they tend to look very different.&lt;/p&gt;
-&lt;p&gt;You can find the code I used to create these images &lt;a href="https://github.com/Aaron-d-k/Quadratic-fractals/tree/main"&gt;here&lt;/a&gt;. You can run it to try and create more such fractals (Also, it allows you to zoom in and out). I thought of embedding it here using emscripten, but it ends up being insanely slow on web.&lt;/p&gt;
+&lt;p&gt;There is a famous family of fractals called &lt;a href="https://en.wikipedia.org/wiki/Julia_set#Quadratic%20polynomials"&gt;filled julia sets&lt;/a&gt;, which are related to another fractal called the Mandelbrot set. Some filled Julia sets are associated with the main heart-shaped region (i.e. cardioid) of the Mandelbrot set. It is interesting that these are a subset of our family of fractals, but they tend to look very different.&lt;/p&gt;
+&lt;p&gt;You can find the code I used to create these images &lt;a href="https://github.com/Aaron-d-k/Quadratic-fractals/tree/main"&gt;here&lt;/a&gt;. You can run it to try and create more such fractals (Also, it allows you to zoom in and out). I thought of embedding it here using Emscripten, but it ends up being insanely slow on the web.&lt;/p&gt;
 &lt;p&gt;Some interesting technical challenges I faced:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;
-&lt;p&gt;I actually considered the more general 12 parameter functions with constant terms too. This includes famous fractals like the Hénon map. But I encountered a frustrating issue where there would be fractals that seemed to look intricate to my SA due to the limited number of iterations, but were actually just empty because there wasn&amp;rsquo;t any attractor (i.e. all the points were black)! Another issue was that there was no fast way to determine convergence other than waiting and hoping everything else goes off to infinity. To fix these, I just decided to limit myself to functions with a fixed point at 0.&lt;/p&gt;
+&lt;p&gt;I actually considered the more general 12-parameter functions with constant terms, too. This includes famous fractals like the Hénon map. But I encountered a frustrating issue where there would be fractals that seemed to look intricate to my SA due to the limited number of iterations, but were actually just empty because there wasn&amp;rsquo;t any attractor (i.e. all the points were black)! Another issue was that there was no fast way to determine convergence other than waiting and hoping everything else goes to infinity. To fix these, I just decided to limit myself to functions with a fixed point at 0.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;How to determine if a point is going to converge to zero?
 We can find out if points close to 0 always tend to get closer by calculating something called the &lt;a href="https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant"&gt;Jacobian matrix&lt;/a&gt; of the map at 0. If all the eigenvalues of this matrix satisfy 
 &lt;span class="katex"&gt;&lt;math xmlns="http://www.w3.org/1998/Math/MathML"&gt;&lt;semantics&gt;&lt;mrow&gt;&lt;mi mathvariant="normal"&gt;∣&lt;/mi&gt;&lt;mi&gt;λ&lt;/mi&gt;&lt;mi mathvariant="normal"&gt;∣&lt;/mi&gt;&lt;mo&gt;&amp;lt;&lt;/mo&gt;&lt;mn&gt;1&lt;/mn&gt;&lt;/mrow&gt;&lt;annotation encoding="application/x-tex"&gt;|\lambda|&amp;lt;1&lt;/annotation&gt;&lt;/semantics&gt;&lt;/math&gt;&lt;/span&gt;
-, then it is attracting. The reason this works is actually pretty clever, the idea is that near the fixed point, the function behaves like its Jacobian. You can usually decompose any vector as the sum of two eigenvectors and If all the eigenvectors contract due to the mapping, it is apparent that their sum should also go to zero.&lt;/p&gt;
+, then it is attracting. The reason this works is actually pretty clever; the idea is that near the fixed point, the function behaves like its Jacobian. You can usually decompose any vector as the sum of two eigenvectors, and if all the eigenvectors contract due to the mapping, it is apparent that their sum should also go to zero.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;Using the previous proof to find a lower bound for the radius of the region where all points definitely converge to 0 is not trivial. You have to take care of the fact that even though the function might be squishing points towards 0 overall, it could temporarily cause some nearby points to go farther and take this into account when bounding the quadratic terms.&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;Some fractals looked too ugly and dusty. I tried fixing it using a Gaussian blur, but that just made it look smudged. After trying a few techniques I felt that median blur seemed to look best.&lt;/p&gt;
+&lt;p&gt;Some fractals looked too ugly and dusty. I tried fixing it using a Gaussian blur, but that just made it look smudged. After trying a few techniques, I felt that median blur seemed to look best.&lt;/p&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;This family of maps actually includes a lot of fractals called &lt;a href="https://en.wikipedia.org/wiki/Attractor#Strange_attractor"&gt;strange attractors&lt;/a&gt; and what appears to be non-chaotic ring-shaped attractors but due to how my visualization works, you unfortunately cannot truly appreciate their beauty here. I actually want to try and explore the ring attractors and how they deform into strange attractors as the parameters continuously change, because that is something I have never seen before.&lt;/p&gt;
+&lt;p&gt;This family of maps actually includes a lot of fractals called &lt;a href="https://en.wikipedia.org/wiki/Attractor#Strange_attractor"&gt;strange attractors&lt;/a&gt;, and what appears to be non-chaotic ring-shaped attractors, but due to how my visualisation works, you unfortunately cannot truly appreciate their beauty here. I actually want to try to explore the ring attractors and how they deform into strange attractors as the parameters continuously change, because that is something I have never seen before.&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;&lt;em&gt;Edited (Oct 14): Improved wording&lt;/em&gt;&lt;/p&gt;</description></item><item><title>The Ising Model and CA, Part I: Thermodynamics in CA</title><link>https://Aaron-d-k.github.io/posts/ising-ca-part-1/</link><pubDate>Tue, 23 Sep 2025 00:07:56 +0530</pubDate><guid>https://Aaron-d-k.github.io/posts/ising-ca-part-1/</guid><description>&lt;blockquote&gt;
 &lt;p&gt;&lt;span style="color: gray;"&gt;Can thermodynamics be applied to a cellular automaton? Can we use it to create a cellular automaton that reproduces the Ising model phase transition?&lt;/span&gt;&lt;/p&gt;&lt;/blockquote&gt;

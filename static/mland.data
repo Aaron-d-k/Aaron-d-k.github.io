@@ -6043,6 +6043,24 @@ void main()
     // Calculate final vertex position
     gl_Position = mvp*vec4(vertexPosition, 1.0);
 }#version 100
+precision mediump float;
+
+varying vec3 fragPosition;
+varying vec2 fragTexCoord;
+varying vec4 fragColor;
+varying vec3 fragNormal;
+
+uniform sampler2D texture0;
+uniform vec4 colDiffuse;
+uniform vec3 sunlight_direc;
+
+void main()
+{
+    vec4 texelColor = texture2D(texture0, fragTexCoord);
+    float lighting = clamp(0.6+max(0.0,dot(fragNormal,-sunlight_direc)),0.0,1.2);
+
+    gl_FragColor = vec4(texelColor.xyz*lighting, 1.0);
+}#version 100
 
 // Input vertex attributes
 attribute vec3 vertexPosition;
